@@ -18,7 +18,7 @@ void parse(char *line) {
             push(s, vi);
             
         }
-        int choice;
+        int choice = 0;
         if (strcmp(token, "+") == 0) choice = 1;
         if (strcmp(token, "-") == 0) choice = 2;
         if (strcmp(token, "*") == 0) choice = 3;
@@ -32,8 +32,8 @@ void parse(char *line) {
         if (strcmp(token, "^") == 0) choice = 11;
         if (strcmp(token, "~") == 0) choice = 12;
 
-        else {
-            switch (choice) {
+        
+        switch (choice) {
                 case 1: {
                     long Y = pop(s);
                     long X = pop(s);
@@ -60,12 +60,12 @@ void parse(char *line) {
                 }
                 case 5: {
                     long X = pop(s);
-                    push(s, X+1);
+                    push(s, X-1);
                     break;
                 }
                 case 6: {
                     long X = pop(s);
-                    push(s, X-1);
+                    push(s, X+1);
                     break;
                 }
                 case 7: {
@@ -106,7 +106,7 @@ void parse(char *line) {
                 default: 
                     break;
             }
-        }
+        
     }
 }
 
