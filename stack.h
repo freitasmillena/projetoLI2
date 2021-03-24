@@ -36,3 +36,18 @@ int full_stack(Stack* s) {
     return (s->sp == s->capacity - 1); //capacity - 1 é o último elemento do array, caso esteja preenchido, logo, a stack está cheia
 
 }
+
+//Adicionar elementos na stack
+
+void push(Stack* s, long n) { //n é o elemento que será adicionado
+     
+    if (full_stack(s)) {
+        
+        s->capacity *= 2; //duplica a capacidade da stack
+        s->elements = realloc(s->elements,s->capacity * sizeof(long)); //realloc desta nova capacidade
+        
+    }
+    s->elements[++s->sp] = n;
+
+    
+}
