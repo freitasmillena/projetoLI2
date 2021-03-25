@@ -6,7 +6,7 @@ Este é o projeto de um grupo de alunos da Universidade do Minho para a cadeira 
 
 * André Alves  
 * Gonçalo Gomes 
-* [Inês Castro] (https://github.com/graphics-ins)
+* [Inês Castro](https://github.com/graphics-ins)
 * Millena Freitas
 
 ## Objetivo
