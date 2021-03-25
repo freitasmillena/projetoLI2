@@ -1,3 +1,11 @@
+/**
+* @File main.c Ficheiro que contém a função principal.
+*
+* Module : Guião1 (1a semana)
+* Description : Main - Trabalho de LI2 2020/2021
+*
+*/
+
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -5,7 +13,15 @@
 
 #include "parser.h"
 
+/**
+* \brief Esta é a função principal do programa.
+*
+* @Returns O valor 0.
+*/
+
 int main() {
+    
+
     char line[10240]; 
 
     assert(fgets(line, 10240, stdin) != NULL);
@@ -13,6 +29,7 @@ int main() {
 
     parse(line);
 
+    
     return 0;
 }
 
