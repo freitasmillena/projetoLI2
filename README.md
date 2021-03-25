@@ -4,10 +4,10 @@ Este é o projeto de um grupo de alunos da Universidade do Minho para a cadeira 
 
 ## Participantes
 
-* André Alves  
-* Gonçalo Gomes 
+* [André Alves](https://github.com/AN-DRE4)  
+* [Gonçalo Gomes](https://github.com/gomes94924) 
 * [Inês Castro](https://github.com/graphics-ins)
-* Millena Freitas
+* [Millena Freitas](https://github.com/freitasmillena)
 
 ## Objetivo
 
