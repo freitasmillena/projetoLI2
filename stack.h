@@ -51,24 +51,3 @@ void push(Stack* s, long n) { //n é o elemento que será adicionado
 
     
 }
-
-//Remover elemento do topo stack
-
-int pop(Stack* s) {
-    //
-    
-    if (empty_stack(s)) return 0; 
-
-    else {
-
-        s->capacity -= sizeof(long);
-        s->elements = realloc(s->elements, s->capacity * sizeof(long));
-        
-
-
-        
-        return s->elements[s->sp--];
-    }
-
-}
-
