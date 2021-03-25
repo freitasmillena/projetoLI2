@@ -72,3 +72,10 @@ int pop(Stack* s) {
 
 }
 
+//Imprimir a stack 
+void print_stack(Stack *s) {
+    
+    for (int i = 0; i <= s->sp; i++) {
+        printf("%ld", s->elements[i]);
+    }
+}

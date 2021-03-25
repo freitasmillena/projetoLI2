@@ -108,7 +108,8 @@ void parse(char *line) {
             }
         
     }
-    for (int i = 0; i <= s->sp; i++) printf("%ld", s->elements[i]);
+    
+    print_stack(s);
 
     putchar('\n');
 }
