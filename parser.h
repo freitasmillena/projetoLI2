@@ -1,4 +1,6 @@
 /**
+* @File Ficheiro que contém a função parse
+*
 * Module : Guião1 (1a semana)
 * Description : Parser -> (Guião1) - Trabalho de LI2 2020/2021
 *
