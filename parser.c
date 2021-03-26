@@ -41,87 +41,73 @@ void parse(char *line) {
             push(s, vi);
             
         }
-        int choice = 0;
-        if (strcmp(token, "+") == 0) choice = 1;
-        if (strcmp(token, "-") == 0) choice = 2;
-        if (strcmp(token, "*") == 0) choice = 3;
-        if (strcmp(token, "/") == 0) choice = 4;
-        if (strcmp(token, "(") == 0) choice = 5;
-        if (strcmp(token, ")") == 0) choice = 6;
-        if (strcmp(token, "%") == 0) choice = 7;
-        if (strcmp(token, "#") == 0) choice = 8;
-        if (strcmp(token, "&") == 0) choice = 9;
-        if (strcmp(token, "|") == 0) choice = 10;
-        if (strcmp(token, "^") == 0) choice = 11;
-        if (strcmp(token, "~") == 0) choice = 12;
-
         
-        switch (choice) {
-                case 1: {
+        switch (*token) {
+                case '+': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s, (X + Y));
                     break;
                 }
-                case 2: {
+                case '-': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s, (X - Y));
                     break;
                 }
-                case 3: {
+                case '*': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s, (X * Y));
                     break;
                 }
-                case 4: {
+                case '/': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s, (X / Y));
                     break;
                 }
-                case 5: {
+                case '(': {
                     long X = pop(s);
                     push(s, X-1);
                     break;
                 }
-                case 6: {
+                case ')': {
                     long X = pop(s);
                     push(s, X+1);
                     break;
                 }
-                case 7: {
+                case '%': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s, (X % Y));
                     break;
                 }
-                case 8: {
+                case '#': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s, (pow(X,Y)));
                     break;
                 }
-                case 9: {
+                case '&': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s,X&Y);
                     break;
                 }
-                case 10: {
+                case '|': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s,X|Y);
                     break;
                 }
-                case 11: {
+                case '^': {
                     long Y = pop(s);
                     long X = pop(s);
                     push(s,X^Y);
                     break;
                 }
-                case 12: {
+                case '~': {
                     long X = pop(s);
                     push(s,~X);
                     break;
