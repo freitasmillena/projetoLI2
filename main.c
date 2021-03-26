@@ -1,5 +1,5 @@
 /**
-* @File main.c Ficheiro que contém a função principal.
+* @file main.c Ficheiro que contém a função principal.
 *
 * Module : Guião1 (1a semana)
 * Description : Main - Trabalho de LI2 2020/2021
