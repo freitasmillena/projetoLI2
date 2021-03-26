@@ -11,8 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "parser.h"
-
 /**
 * \brief Esta é a função principal do programa.
 *
