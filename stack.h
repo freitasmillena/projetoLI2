@@ -20,6 +20,7 @@ typedef struct {
 
 }Stack;
 
+Stack* create_stack();
 void push(Stack *s, long n);
 int pop(Stack *s);
 int empty_stack(Stack* s);
