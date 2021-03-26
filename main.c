@@ -16,6 +16,7 @@
 *
 * @Returns O valor 0.
 */
+void parse(char *line);
 
 int main() {
     
