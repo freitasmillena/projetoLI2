@@ -112,6 +112,47 @@ void parse(char *line) {
                     push(s,~X);
                     break;
                 }
+                case '_': {
+                    long X = pop(s);
+                    push(s,X);
+                    push(s,X);
+                    break;
+                }
+                case ';': {
+                    pop(s);
+                    break;
+                }
+                case '@': {
+                    long X = pop(s);
+                    long Y = pop(s);
+                    long Z = pop(s);
+                    push(s,Y); push(s,X); push(s,Z);
+                    break;
+                }
+                case '$': {
+                    long X = pop(s);
+                    int v[1024];
+                    int j = 0;
+                    int i;
+                    if (X == 0) {
+                        long Y = pop(s);
+                        push(s,Y);
+                        push(s,Y);
+                    } 
+                    else {
+                        for (i = 0; i < X; i++) {
+                            v[i] = pop(s);
+                        }
+                        long Z = pop(s);
+                        push(s,Z);
+                        while (v[j] != '\0') {
+                            push(s, v[j]);
+                            j++;
+                        }
+                        push(s,Z);
+                    }
+                    break;
+                }
                 default: 
                     break;
             }
