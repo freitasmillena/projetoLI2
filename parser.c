@@ -122,6 +122,12 @@ void parse(char *line) {
                     pop(s);
                     break;
                 }
+                case '\\': {
+                    long X = pop(s);
+                    long Y = pop (s); 
+                    push(s,X); push (s,Y);
+                    break;
+                }
                 case '@': {
                     long X = pop(s);
                     long Y = pop(s);
