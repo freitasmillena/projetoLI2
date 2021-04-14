@@ -166,6 +166,26 @@ void parse(char *line) {
                     }
                     break;
                 }
+                
+                case 'c': {
+                    long X = pop_LONG(s);
+                    char Y = X;
+                    push_CHAR(s,Y);
+                    break;
+                }
+                case 'f': {
+                    long X = pop_LONG(s);
+                    double Y = X;
+                    push_DOUBLE(s,Y);
+                    break;
+                }
+                case 's': {
+                    long X = pop_LONG(s);
+                    char Y[1024];
+                    sprintf(Y, "%d", X);
+                    push_STRING(s,Y);
+                    break;
+                }
                 default: 
                     break;
             }
