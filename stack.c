@@ -1,11 +1,11 @@
 /**
  * @file stack.c 
  * 
- * Module : Guião1 (1a semana)
- * Description : Stack -> (Guião1) - Trabalho de LI2 2020/2021
+ * Module : Guião1 + Guião 2 
+ * Description : Stack -> (Guião1 e Guião2) - Trabalho de LI2 2020/2021
  * 
  * Neste ficheiro stack.h tem-se como objetivo a implementação da stack. Stack é uma estrutura de dados linear que segue uma ordem particular para a qual as operações são realizadas e caracteriza um empilhamento de dados. A ordem a ser utilizada é **Last In First Out**.
- * 
+ * (Guião2) Atualizar o código para os diferentes tipos de dados.
  */
 #include <stdio.h>
 #include <stdlib.h>
