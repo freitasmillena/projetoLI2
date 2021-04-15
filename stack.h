@@ -69,3 +69,15 @@ STACK_OPERATION_PROTO(double,DOUBLE)
 STACK_OPERATION_PROTO(char,CHAR)
 STACK_OPERATION_PROTO(char *, STRING)
 
+/**
+* \brief Indicar o tipo de dados que está na stack.
+*/
+
+  int id_Type(Stack *s) {
+    int r;
+    if(has_type(top(s), LONG)) r = 1;
+    if(has_type(top(s), DOUBLE)) r = 2;
+    if(has_type(top(s), CHAR)) r = 4;
+    if(has_type(top(s), STRING)) r = 8;
+    return r;
+}
