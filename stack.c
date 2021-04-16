@@ -18,14 +18,24 @@
 */
 int idtype(Stack* s) {
     int r = 0;
+    DATA elem = s->elements[s->sp];
+    TYPE type = elem.type;
+    switch(type) {
+        case LONG: r = 1; break;
+        case DOUBLE: r = 2; break;
+        case CHAR: r = 3; break;
+        case STRING: r = 4; break;
+    }
+    return r;
+}
+
+/*int r = 0;
     if(has_type(top(s), LONG)) r = 1;
     else if(has_type(top(s), DOUBLE)) r = 2;
     else if(has_type(top(s), CHAR)) r = 3;
     else if(has_type(top(s), STRING)) r = 4;
     return r;
-}
-
-
+*/
 //Conversão de tipos
 
 //Macro para conversão de tipos
@@ -117,6 +127,9 @@ void push(Stack* s, DATA n) {
     s->elements[++s->sp] = n; ///< Adiciona o elemento à stack e atualiza o stack pointer para a posição deste elemento
 
     
+    
+    
+    
 }
 
 
@@ -134,6 +147,9 @@ DATA pop(Stack* s) {
         s->elements = realloc(s->elements, s->capacity * sizeof(DATA)); ///< Realoca o espaço na memória do array que contém os elementos da stack para esta nova capacity
                 
         return s->elements[s->sp--];
+        
+        
+        
     
 }
 
@@ -149,13 +165,13 @@ void print_stack(Stack *s) {
         TYPE type = n.type;
         switch(type) {
             case LONG:
-                printf("%ld ", n.x.LONG); break;
+                printf("%ld", n.x.LONG); break;
             case DOUBLE:
-                printf("%g ", n.x.DOUBLE); break;
+                printf("%g", n.x.DOUBLE); break;
             case CHAR:
-                printf("%c ", n.x.CHAR); break;
+                printf("%c", n.x.CHAR); break;
             case STRING:
-                printf("%s ", n.x.STRING); break;
+                printf("%s", n.x.STRING); break;
         }
     }
     
@@ -185,8 +201,16 @@ STACK_OPERATION(char *, STRING)
 void char_conversion (Stack* s) {
     int x = idtype(s);
     switch (x) {
-        case (1): {long y = pop_LONG(s); push(s, longToChar(y)); break;}
-        case (2): {double y = pop_DOUBLE(s); push(s,doubleToLong(y)); long z = pop_LONG(s); push(s, longToChar(z)); break;}
+        case (1): {
+            long y = pop_LONG(s); 
+            push(s, longToChar(y)); 
+            break;
+        }
+        case (2): {
+            long y  = (long) pop_DOUBLE(s);
+            push(s, longToChar(y));
+            break;
+        }
         case (3): ; break;
 
     }
@@ -197,9 +221,22 @@ void long_conversion (Stack* s) {
     int x = idtype(s);
     switch (x) {
         case (1): ; break;
-        case (2): {double y = pop_DOUBLE(s); push(s, doubleToLong(y)); break;}
-        case (3): {char c = pop_CHAR(s); push(s,charToLong(c)); break;}
-        case (4): {char *ptr; long r = strtol(pop_STRING(s),&ptr, 10); push_LONG(s,r); break;}
+        case (2): {
+            double y = pop_DOUBLE(s); 
+            push(s, doubleToLong(y)); 
+            break;
+        }
+        case (3): {
+            char c = pop_CHAR(s); 
+            push(s,charToLong(c)); 
+            break;
+        }
+        case (4): {
+            char *ptr; 
+            long r = strtol(pop_STRING(s),&ptr, 10); 
+            push_LONG(s,r); 
+            break;
+        }
 
     }
 }
@@ -208,10 +245,23 @@ void long_conversion (Stack* s) {
 void double_conversion(Stack* s) {
     int x = idtype(s);
     switch (x) {
-        case (1): {long y = pop_LONG(s); push(s,longToDouble(y)); break;}
+        case (1): {
+            long y = pop_LONG(s); 
+            push(s,longToDouble(y)); 
+            break;
+        }
         case (2): ; break;
-        case (3): {char c = pop_CHAR(s); push(s,charToDouble(c)); break;}
-        case (4): {char *ptr; double r = strtod(pop_STRING(s),&ptr); push_DOUBLE(s,r); break;}
+        case (3): {
+            char c = pop_CHAR(s); 
+            push(s,charToDouble(c)); 
+            break;
+        }
+        case (4): {
+            char *ptr; 
+            double r = strtod(pop_STRING(s),&ptr); 
+            push_DOUBLE(s,r); 
+            break;
+        }
 
     }
 }
@@ -221,9 +271,21 @@ void string_conversion(Stack* s) {
     int x = idtype(s);
     char str[40];
     switch (x) {
-        case (1): sprintf(str, "%ld", pop_LONG(s)); push_STRING(s,str); break;
-        case (2): sprintf(str, "%g", pop_DOUBLE(s)); push_STRING(s,str); break;
-        case (3): sprintf(str, "%c", pop_CHAR(s)); push_STRING(s,str); break;
+        case (1): {
+            sprintf(str, "%ld", pop_LONG(s)); 
+            push_STRING(s,str);
+            break;
+        }
+        case (2): {
+            sprintf(str, "%g", pop_DOUBLE(s)); 
+            push_STRING(s,str); 
+            break;
+        }
+        case (3): {
+            sprintf(str, "%c", pop_CHAR(s)); 
+            push_STRING(s,str); 
+            break;
+        }
         case (4): ;break;
     }
 }
