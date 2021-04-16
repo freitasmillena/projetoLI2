@@ -1,11 +1,12 @@
 /**
 * @file parser.h
 *
-* Module : Guião1 (1a semana)
+* Module : Guião1 + Guião2 (1a semana e 2a semana)
 * Description : Parser -> (Guião1) - Trabalho de LI2 2020/2021
 *
 * No primeiro guião, temos como objetivo criar um programa que fosse capaz de ler
 * um input (ex.: " 17 11 - ( 18 9 / ") e devolver um output (ex.: 52).
+* Do Guião2, adicionamos mais operações e contruímos o código de forma a ser possivel utilizar diferentes tipos de dados.
 *
 */
 #include <stdio.h>
@@ -35,6 +36,9 @@ void ROTATE(Stack* s) {
 
 }
 
+/**
+* \brief Definição das operações
+*/
 
 #define ADD(x,y) x + y
 #define SUB(x,y) x - y
@@ -48,7 +52,9 @@ void ROTATE(Stack* s) {
 #define XOR(x,y) x ^ y
 #define NOT(x) ~x
 
-
+/**
+* Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o sei tipo de dados.
+*/
 
 #define CASE_BIN(op)                                        \
                                                             \
