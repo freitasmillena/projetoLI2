@@ -1,16 +1,16 @@
 /**
  * @file stack.h 
  * 
- * Module : Guião1 (1a semana)
- * Description : Stack -> (Guião1) - Trabalho de LI2 2020/2021
+ * Module : Guião1 + Guião2
+ * Description : Stack -> (Guião1 e Guião2) - Trabalho de LI2 2020/2021
  * 
  * Neste ficheiro stack.h tem-se como objetivo a implementação da stack. Stack é uma estrutura de dados linear que segue uma ordem particular para a qual as operações são realizadas e caracteriza um empilhamento de dados. A ordem a ser utilizada é **Last In First Out**.
- * 
+ * (Guião 2) Atualizar a stack de forma a trabalhar com os diferentes tipos de dados.
  */
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8, POINTER } TYPE;
+typedef enum {LONG = 1, DOUBLE = 2, CHAR = 3, STRING = 4} TYPE;
 
 #define INTEGER (LONG | CHAR)
 #define NUMBER  (INTEGER | DOUBLE)
@@ -37,6 +37,7 @@ typedef struct {
 
 }Stack;
 
+int idtype(Stack* s);
 int has_type(DATA n, int mask);
 Stack* create_stack();
 DATA top(Stack* s);
@@ -45,7 +46,10 @@ DATA pop(Stack *s);
 int empty_stack(Stack* s);
 int full_stack(Stack* s);
 void print_stack(Stack *s);
-
+void char_conversion (Stack* s);
+void long_conversion (Stack* s);
+void double_conversion (Stack* s);
+void string_conversion (Stack* s);
 
 //Macros 
 

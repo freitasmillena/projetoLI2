@@ -10,24 +10,27 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stack.h"
 
 /**
 * \brief Esta é a função principal do programa.
 *
 * @Returns O valor 0.
 */
-void parse(char *line);
+void parse(char *line, Stack* s);
 
 int main() {
     
+    Stack* s = create_stack();
 
     char line[10240]; 
 
     assert(fgets(line, 10240, stdin) != NULL);
     assert(line[strlen(line) - 1] == '\n');
 
-    parse(line);
+    parse(line,s);
 
+    print_stack(s);
     
     return 0;
 }

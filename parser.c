@@ -14,6 +14,7 @@
 #include <math.h>
 #include <assert.h>
 #include "stack.h"
+#include "op.h"
 
 /**
 * A função parse começa por declarar os delimitadores e chama função @create_stack do ficheiro stack.h.
@@ -30,148 +31,69 @@
 * imprimindo no final o resultado.
 */
 
-void parse(char *line) {
+void parse(char *line, Stack* s) {
     char *delims = " \t\n";
-    Stack* s = create_stack();
+    
 
     for(char *token = strtok(line,delims); token != NULL; token = strtok(NULL,delims)) {
         char *sobra;
-        long vi = strtol(token, &sobra, 10);
-        if(strlen(sobra) == 0) {
-            
-            push_LONG(s, vi);
-            
+        char *sobrad;
+        char resto[50];
+
+        if(line[0] == 'l') {
+        
+            int i,j;
+            for (i = 2, j = 0; line[i] != '\0'; i++,j++) {
+                resto[j] = line[i];
+            }
         }
         
-        switch (*token) {
-                
-                case 'l': {     //CONFIRMAR -- no idea se é algo assim
-                    char l[10240];
-                    assert(fgets(l, 10240, stdin) != NULL);
-                    push_STRING(s,l);
-                    break;
-                }
-                case '+': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s, (X + Y));
-                    break;
-                }
-                case '-': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s, (X - Y));
-                    break;
-                }
-                case '*': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s, (X * Y));
-                    break;
-                }
-                case '/': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s, (X / Y));
-                    break;
-                }
-                case '(': {
-                    long X = pop_LONG(s);
-                    push_LONG(s, X-1);
-                    break;
-                }
-                case ')': {
-                    long X = pop_LONG(s);
-                    push_LONG(s, X+1);
-                    break;
-                }
-                case '%': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s, (X % Y));
-                    break;
-                }
-                case '#': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s, (pow(X,Y)));
-                    break;
-                }
-                case '&': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s,X&Y);
-                    break;
-                }
-                case '|': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s,X|Y);
-                    break;
-                }
-                case '^': {
-                    long Y = pop_LONG(s);
-                    long X = pop_LONG(s);
-                    push_LONG(s,X^Y);
-                    break;
-                }
-                case '~': {
-                    long X = pop_LONG(s);
-                    push_LONG(s,~X);
-                    break;
-                }
-                case '_': {
-                    long X = pop_LONG(s);
-                    push_LONG(s,X);
-                    push_LONG(s,X);
-                    break;
-                }
-                case ';': {
-                    pop_LONG(s);
-                    break;
-                }
-                case '\\': {
-                    long X = pop_LONG(s);
-                    long Y = pop_LONG(s); 
-                    push_LONG(s,X); push_LONG(s,Y);
-                    break;
-                }
-                case '@': {
-                    long X = pop_LONG(s);
-                    long Y = pop_LONG(s);
-                    long Z = pop_LONG(s);
-                    push_LONG(s,Y); push_LONG(s,X); push_LONG(s,Z);
-                    break;
-                }
-                case '$': {
-                    long X = pop_LONG(s);
-                    int v[1024];
-                    int j = 0;
-                    int i;
-                    if (X == 0) {
-                        long Y = pop_LONG(s);
-                        push_LONG(s,Y);
-                        push_LONG(s,Y);
-                    } 
-                    else {
-                        for (i = 0; i < X; i++) {
-                            v[i] = pop_LONG(s);
-                        }
-                        long Z = pop_LONG(s);
-                        push_LONG(s,Z);
-                        while (v[j] != '\0') {
-                            push_LONG(s, v[j]);
-                            j++;
-                        }
-                        push_LONG(s,Z);
-                    }
-                    break;
-                }
-                default: 
-                    break;
-            }
+        long vi = strtol(token, &sobra, 10);
+        double vd = strtod(token, &sobrad);
         
-    }
-    print_stack(s);
+        if(strlen(sobra) == 0) push_LONG(s, vi);
+        else if(strlen(sobrad) == 0) push_DOUBLE(s,vd);
+        
+        
+        int x = idtype(s); 
 
+        
+        
+        switch (*token) {
+
+            case 'l': {
+                char l[10240]; 
+                assert(fgets(l, 10240, stdin) != NULL);
+                assert(l[strlen(l) - 1] == '\n');
+                parse(l,s);
+                parse(resto,s);
+                break;
+            }
+            case 'c': char_conversion(s); break;
+            case 'f': double_conversion(s); break;
+            case 'i': long_conversion(s); break;
+            case 's': string_conversion(s); break;
+            case '+': CASE_OP(ADD); break;
+            case '-': CASE_OP(SUB); break;
+            case '*': CASE_OP(MULT); break;
+            case '/': CASE_OP(DIV); break;
+            case '(': CASE_SOLO(--); break;
+            case ')': CASE_SOLO(++); break;
+            case '%': CASE_BIN(MOD); break;
+            case '#': CASE_OP(pow); break;
+            case '&': CASE_BIN(AND); break;
+            case '|': CASE_BIN(OR); break;
+            case '^': CASE_BIN(XOR); break;
+            case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;}
+            case '_': push(s,top(s)); break;
+            case ';': pop(s); break;
+            case '\\': SWAP(s); break;
+            case '@': ROTATE(s); break;
+            case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
+    
+        }
+    }
+    
+    
 }
+
