@@ -1,3 +1,13 @@
+/**
+* @file op.h
+*
+* Module : Guião2 (2a semana)
+* Description : Op -> (Guião2) - Trabalho de LI2 2020/2021
+*
+* Para este guião o nosso principal objetivo era consoante o tipo de dados da stack reslizar as diferentes operações introduzidas pelo guião1 mais aquelas
+* que se encontravam no guião2.
+*
+*/
 
 
 void SWAP(Stack* s) {
@@ -19,6 +29,10 @@ void ROTATE(Stack* s) {
 
 }
 
+/** 
+* Decidimos definir as diferentes operações desta forma para que o código fosse de leitura acessível e visualmente mais apelativo.
+*/
+
 #define ADD(x,y) x + y
 #define SUB(x,y) x - y
 #define MULT(x,y) x * y
@@ -31,7 +45,9 @@ void ROTATE(Stack* s) {
 #define XOR(x,y) x ^ y
 #define NOT(x) ~x
 
-
+/**
+* Macros para diferentes tipos de operações, que estão a ser aplicadas no parser, dependendo do sinal usado e dos tipos de dados.
+*/
 
 #define CASE_BIN(op)                                        \
                                                             \
