@@ -25,6 +25,7 @@ int idtype(Stack* s) {
     return r;
 }
 
+
 //Conversão de tipos
 
 //Macro para conversão de tipos

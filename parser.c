@@ -78,7 +78,12 @@ void ROTATE(Stack* s) {
             push_DOUBLE(s,op X);       \
                                        \
     }                                  \
-                                      
+    else if (x == 3) {                 \
+        char X = pop_CHAR(s);          \
+        push_CHAR(s,op X);             \
+    }                                  \
+
+
 
 
 
@@ -150,49 +155,49 @@ void parse(char *line, Stack* s) {
         long vi = strtol(token, &sobra, 10);
         double vd = strtod(token, &sobrad);
         
-        if(strlen(sobra) == 0) push_LONG(s, vi);
-        else if(strlen(sobrad) == 0) push_DOUBLE(s,vd);
+        if(strlen(sobra) == 0) push_LONG(s, vi); 
+        else if(strlen(sobrad) == 0) push_DOUBLE(s,vd); 
         
-        
-        int x = idtype(s); 
-
-        
-        
-        switch (*token) {
-
-            case 'l': {
-                char l[10240]; 
-                assert(fgets(l, 10240, stdin) != NULL);
-                //assert(l[strlen(l) - 1] == '\n');
-                push_STRING(s,l);
-                
-                break;
-            }
+        else {
             
-            case 'c': char_conversion(s); break;
-            case 'f': double_conversion(s); break;
-            case 'i': long_conversion(s); break;
-            case 's': string_conversion(s); break;
-            case '+': CASE_OP(ADD); break;
-            case '-': CASE_OP(SUB); break;
-            case '*': CASE_OP(MULT); break;
-            case '/': CASE_OP(DIV); break;
-            case '(': CASE_SOLO(--); break;
-            case ')': CASE_SOLO(++); break;
-            case '%': CASE_BIN(MOD); break;
-            case '#': CASE_OP(pow); break;
-            case '&': CASE_BIN(AND); break;
-            case '|': CASE_BIN(OR); break;
-            case '^': CASE_BIN(XOR); break;
-            case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;}
-            case '_': push(s,top(s)); break;
-            case ';': pop(s); break;
-            case '\\': SWAP(s); break;
-            case '@': ROTATE(s); break;
-            case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
-    
+            int x = idtype(s); 
+        
+
+            switch (*token) {
+
+                case 'l': {
+                    char l[10240]; 
+                    assert(fgets(l, 10240, stdin) != NULL);
+                    //assert(l[strlen(l) - 1] == '\n');
+                    push_STRING(s,l);
+
+                    break;
+                }
+
+                case 'c': char_conversion(s); break;
+                case 'f': double_conversion(s); break;
+                case 'i': long_conversion(s); break;
+                case 's': string_conversion(s); break;
+                case '+': CASE_OP(ADD); break;
+                case '-': CASE_OP(SUB); break;
+                case '*': CASE_OP(MULT); break;
+                case '/': CASE_OP(DIV); break;
+                case '(': CASE_SOLO(--); break;
+                case ')': CASE_SOLO(++); break;
+                case '%': CASE_BIN(MOD); break;
+                case '#': CASE_OP(pow); break;
+                case '&': CASE_BIN(AND); break;
+                case '|': CASE_BIN(OR); break;
+                case '^': CASE_BIN(XOR); break;
+                case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;}
+                case '_': push(s,top(s)); break;
+                case ';': pop(s); break;
+                case '\\': SWAP(s); break;
+                case '@': ROTATE(s); break;
+                case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
+            }    
         }
-    }
+    }   
     
     
 }
