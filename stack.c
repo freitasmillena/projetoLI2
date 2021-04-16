@@ -17,7 +17,7 @@
 * \brief Indicar o tipo de dados que está na stack.
 */
 int idtype(Stack* s) {
-    int r;
+    int r = 0;
     if(has_type(top(s), LONG)) r = 1;
     else if(has_type(top(s), DOUBLE)) r = 2;
     else if(has_type(top(s), CHAR)) r = 3;
@@ -198,6 +198,7 @@ void long_conversion (Stack* s) {
         case (1): ; break;
         case (2): {double y = pop_DOUBLE(s); push(s, doubleToLong(y)); break;}
         case (3): {char c = pop_CHAR(s); push(s,charToLong(c)); break;}
+        case (4): {char *ptr; long r = strtol(pop_STRING(s),&ptr, 10); push_LONG(s,r); break;}
 
     }
 }
@@ -209,6 +210,7 @@ void double_conversion(Stack* s) {
         case (1): {long y = pop_LONG(s); push(s,longToDouble(y)); break;}
         case (2): ; break;
         case (3): {char c = pop_CHAR(s); push(s,charToDouble(c)); break;}
+        case (4): {char *ptr; double r = strtod(pop_STRING(s),&ptr); push_DOUBLE(s,r); break;}
 
     }
 }

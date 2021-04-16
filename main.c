@@ -31,6 +31,8 @@ int main() {
     parse(line,s);
 
     print_stack(s);
+
+    putchar('\n');
     
     return 0;
 }
