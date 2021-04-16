@@ -51,7 +51,7 @@ void long_conversion (Stack* s);
 void double_conversion (Stack* s);
 void string_conversion (Stack* s);
 
-//Macros 
+//Macros para conversão de tipos de dados.
 
 #define DATA_CONVERSION_PROTO(function,input_type,output_type) \
     DATA function(input_type val);  
