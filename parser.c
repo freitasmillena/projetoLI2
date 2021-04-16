@@ -44,6 +44,7 @@ void parse(char *line) {
         }
         
         switch (*token) {
+                
                 case 'l': {     //CONFIRMAR -- no idea se é algo assim
                     char l[10240];
                     assert(fgets(l, 10240, stdin) != NULL);
