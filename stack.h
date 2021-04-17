@@ -22,7 +22,6 @@ typedef struct {
   double DOUBLE;
   char CHAR;
   char *STRING;
-  void *ptr;
   } x;
 } DATA;
 

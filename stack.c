@@ -29,13 +29,7 @@ int idtype(Stack* s) {
     return r;
 }
 
-/*int r = 0;
-    if(has_type(top(s), LONG)) r = 1;
-    else if(has_type(top(s), DOUBLE)) r = 2;
-    else if(has_type(top(s), CHAR)) r = 3;
-    else if(has_type(top(s), STRING)) r = 4;
-    return r;
-*/
+
 //Conversão de tipos
 
 //Macro para conversão de tipos
@@ -69,7 +63,7 @@ int has_type(DATA n, int mask) {
 Stack* create_stack() {
     Stack* s = (Stack*)malloc(sizeof(Stack)); ///< Aloca espaço para a stack 
     s->sp = -1; ///< inicializa stack pointer em -1, ou seja, stack está vazia
-    s->capacity = 10240; ///< Capacidade inicial da stack
+    s->capacity = 100; ///< Capacidade inicial da stack
     s->elements = (DATA *)malloc(s->capacity * sizeof(DATA)); ///< Aloca espaço para o array que contém os elementos da stack de acordo com a capacity e preenche 0 aos elementos
     
     return s;
@@ -120,7 +114,7 @@ void push(Stack* s, DATA n) {
      
     if (full_stack(s)) {
         
-        s->capacity *= 2; ///< Duplica a capacidade da stack
+        s->capacity += 100; ///< Duplica a capacidade da stack
         s->elements = realloc(s->elements,s->capacity * sizeof(DATA)); ///< Realoca o espaço na memória do array que contém os elementos da stack para esta nova capacity
         
     }
@@ -142,15 +136,8 @@ void push(Stack* s, DATA n) {
  */
 DATA pop(Stack* s) {
       
-
-        s->capacity -= sizeof(DATA); ///< Retira o tamanho de um long da capacity
-        s->elements = realloc(s->elements, s->capacity * sizeof(DATA)); ///< Realoca o espaço na memória do array que contém os elementos da stack para esta nova capacity
-                
-        return s->elements[s->sp--];
-        
-        
-        
-    
+    return s->elements[s->sp--];
+  
 }
 
 /**
