@@ -16,23 +16,24 @@
 #include <assert.h>
 #include "stack.h"
 
-
+//Função para trocar os últimos dois elementos da stack
 void SWAP(Stack* s) {
     DATA x,y;
-    x = s->elements[s->sp];
-    y = s->elements[s->sp - 1];
-    s->elements[s->sp] = y;
-    s->elements[s->sp - 1] = x;
+    x = s->elements[s->sp]; ///< Elemento do topo da stack
+    y = s->elements[s->sp - 1]; ///< Elemento anterior 
+    s->elements[s->sp] = y; ///< y passa a estar no topo da stack
+    s->elements[s->sp - 1] = x; ///< x passa estar na posição antiga de y
 }
 
+//Função para trocar os três últimos elementos da stack
 void ROTATE(Stack* s) {
     DATA x,y,z;
-    x = s->elements[s->sp];
-    y = s->elements[s->sp - 1];
-    z = s->elements[s->sp - 2];
-    s->elements[s->sp] = z;
-    s->elements[s->sp - 1] = x;
-    s->elements[s->sp - 2] = y;
+    x = s->elements[s->sp]; ///< x é o elemento do topo da stack
+    y = s->elements[s->sp - 1]; ///< y é o elemento abaixo de x
+    z = s->elements[s->sp - 2]; ///< z é o elemento abaixo de y
+    s->elements[s->sp] = z; ///< O topo da stack agora possui o elemento z
+    s->elements[s->sp - 1] = x; ///< O endereço onde havia o y guardado passa a guardar o elemento x
+    s->elements[s->sp - 2] = y; ///< O endereço onde havia o z guardado passa a guardar o elemento y
 
 }
 
