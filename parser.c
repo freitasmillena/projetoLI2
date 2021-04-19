@@ -131,7 +131,35 @@ void ROTATE(Stack* s) {
                                                            
 
 
+void var_val(Stack* s, char x)      {                 
+    
+    char hex[] = "ABCDEF";
+    char *v = hex;
+    
+    while (*v) {
+        if (*v == x) {
+            DATA n = charToLong(x); ///< converte char para long e guarda struct DATA
+            long vl = n.x.LONG;   ///< atribui o valor do char(ascii) para v
+            vl -= 55;           ///< valor ascii - 55 = valor em hexadecimal de A-F
+            push_LONG(s,vl);    ///< coloca no topo da stack o valor por omissão
+        }
+        v++;
+    }
 
+    char xyz[] = "XYZ";
+    char *y = xyz;
+
+    while(*y) {
+        if (*y == x) {
+            DATA n = charToLong(x); ///< converte char para long e guarda struct DATA
+            long vl = n.x.LONG;   ///< atribui o valor do char(ascii) para v
+            vl -= 88;           ///< X em ascii em 88, 88-88 = 0. y é 89, 89-88 = 1, assim temos X = 0, Y = 1, Z = 2
+            push_LONG(s,vl);    ///< coloca no topo da stack o valor por omissão
+        }
+        y++;
+    }
+    
+}                                         
 
 
 
@@ -180,7 +208,17 @@ void parse(char *line, Stack* s) {
 
                     break;
                 }
-
+                case 'A': var_val(s,'A'); break;
+                case 'B': var_val(s,'B'); break;
+                case 'C': var_val(s,'C'); break;
+                case 'D': var_val(s,'D'); break;
+                case 'E': var_val(s,'E'); break;
+                case 'F': var_val(s,'F'); break;
+                case 'X': var_val(s,'X'); break;
+                case 'Y': var_val(s,'Y'); break;
+                case 'Z': var_val(s,'Z'); break;
+                case 'N': {char n = '\n'; push_CHAR(s,n); break;}
+                case 'S': {char space = ' '; push_CHAR(s,space); break;}
                 case 'c': char_conversion(s); break;
                 case 'f': double_conversion(s); break;
                 case 'i': long_conversion(s); break;
