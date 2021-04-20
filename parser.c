@@ -212,7 +212,6 @@ void parse(char *line, Stack* s) {
                     case 'l': {
                         char l[10240]; 
                         assert(fgets(l, 10240, stdin) != NULL);
-                        //assert(l[strlen(l) - 1] == '\n');
                         push_STRING(s,l);
                         break;
                     }
