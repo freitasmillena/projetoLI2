@@ -130,36 +130,11 @@ void ROTATE(Stack* s) {
         }                                                   \
                                                            
 
-
-void var_val(Stack* s, char x)      {                 
+void var_top (Stack* s, char c, DATA *v) {
+    v[c-65] = top(s); ///< o elemento que ocupa a posição c-65 tomará o valor do topo da stack. Por exemplo, para A, o código ASCII é 65 e portanto v[0] = topo da stack
     
-    char hex[] = "ABCDEF";
-    char *v = hex;
-    
-    while (*v) {
-        if (*v == x) {
-            DATA n = charToLong(x); ///< converte char para long e guarda struct DATA
-            long vl = n.x.LONG;   ///< atribui o valor do char(ascii) para v
-            vl -= 55;           ///< valor ascii - 55 = valor em hexadecimal de A-F
-            push_LONG(s,vl);    ///< coloca no topo da stack o valor por omissão
-        }
-        v++;
-    }
+}
 
-    char xyz[] = "XYZ";
-    char *y = xyz;
-
-    while(*y) {
-        if (*y == x) {
-            DATA n = charToLong(x); ///< converte char para long e guarda struct DATA
-            long vl = n.x.LONG;   ///< atribui o valor do char(ascii) para v
-            vl -= 88;           ///< X em ascii em 88, 88-88 = 0. y é 89, 89-88 = 1, assim temos X = 0, Y = 1, Z = 2
-            push_LONG(s,vl);    ///< coloca no topo da stack o valor por omissão
-        }
-        y++;
-    }
-    
-}                                         
 
 
 
@@ -181,6 +156,36 @@ void var_val(Stack* s, char x)      {
 void parse(char *line, Stack* s) {
     char *delims = " \t\n";
     
+    //Array no qual cada elemento é uma struct. Possui todas as variáveis e as que possuem valor por omissão já encontram-se inicializadas
+    DATA abc[26] = { 
+                { .type = LONG, .x.LONG = 10 },
+                { .type = LONG, .x.LONG = 11 },
+                { .type = LONG, .x.LONG = 12 },
+                { .type = LONG, .x.LONG = 13 },
+                { .type = LONG, .x.LONG = 14 },
+                { .type = LONG, .x.LONG = 15 },
+                { .type = CHAR, .x.CHAR = 'G' },
+                { .type = CHAR, .x.CHAR = 'H' },
+                { .type = CHAR, .x.CHAR = 'I' },
+                { .type = CHAR, .x.CHAR = 'J' },
+                { .type = CHAR, .x.CHAR = 'K' },
+                { .type = CHAR, .x.CHAR = 'L' },
+                { .type = CHAR, .x.CHAR = 'M' },
+                { .type = CHAR, .x.CHAR = '\n' },
+                { .type = CHAR, .x.CHAR = 'O' },
+                { .type = CHAR, .x.CHAR = 'P' },
+                { .type = CHAR, .x.CHAR = 'Q' },
+                { .type = CHAR, .x.CHAR = 'R' },
+                { .type = CHAR, .x.CHAR = ' ' },
+                { .type = CHAR, .x.CHAR = 'T' },
+                { .type = CHAR, .x.CHAR = 'U' },
+                { .type = CHAR, .x.CHAR = 'V' },
+                { .type = CHAR, .x.CHAR = 'W' },
+                { .type = LONG, .x.LONG = 0 },
+                { .type = LONG, .x.LONG = 1 },
+                { .type = LONG, .x.LONG = 2 }
+            };
+    DATA *p = abc;
 
     for(char *token = strtok(line,delims); token != NULL; token = strtok(NULL,delims)) {
         char *sobra;
@@ -189,61 +194,51 @@ void parse(char *line, Stack* s) {
         
         long vi = strtol(token, &sobra, 10);
         double vd = strtod(token, &sobrad);
+        long t = token[0];
+
+        if(strlen(sobra) == 0) push_LONG(s, vi); ///< caso seja long
         
-        if(strlen(sobra) == 0) push_LONG(s, vi); 
-        else if(strlen(sobrad) == 0) push_DOUBLE(s,vd); 
+        else if(strlen(sobrad) == 0) push_DOUBLE(s,vd); ///< caso seja double
         
+        else if(token[0] == ':') var_top(s, token[1], p); ///< caso seja comando :<Letra>               
+        
+        else if (t>=65 && t<=90) push(s, abc[t-65]); ///< caso seja a variável <Letra>
+                
         else {
-            
-            int x = idtype(s); 
-        
+                int x = idtype(s); 
+                               
+                switch (*token) {
 
-            switch (*token) {
-
-                case 'l': {
-                    char l[10240]; 
-                    assert(fgets(l, 10240, stdin) != NULL);
-                    //assert(l[strlen(l) - 1] == '\n');
-                    push_STRING(s,l);
-
-                    break;
+                    case 'l': {
+                        char l[10240]; 
+                        assert(fgets(l, 10240, stdin) != NULL);
+                        //assert(l[strlen(l) - 1] == '\n');
+                        push_STRING(s,l);
+                        break;
+                    }
+                    case 'c': char_conversion(s); break;
+                    case 'f': double_conversion(s); break;
+                    case 'i': long_conversion(s); break;
+                    case 's': string_conversion(s); break;
+                    case '+': CASE_OP(ADD); break;
+                    case '-': CASE_OP(SUB); break;
+                    case '*': CASE_OP(MULT); break;
+                    case '/': CASE_OP(DIV); break;
+                    case '(': CASE_SOLO(--); break;
+                    case ')': CASE_SOLO(++); break;
+                    case '%': CASE_BIN(MOD); break;
+                    case '#': CASE_OP(pow); break;
+                    case '&': CASE_BIN(AND); break;
+                    case '|': CASE_BIN(OR); break;
+                    case '^': CASE_BIN(XOR); break;
+                    case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;}
+                    case '_': push(s,top(s)); break;
+                    case ';': pop(s); break;
+                    case '\\': SWAP(s); break;
+                    case '@': ROTATE(s); break;
+                    case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
                 }
-                case 'A': var_val(s,'A'); break;
-                case 'B': var_val(s,'B'); break;
-                case 'C': var_val(s,'C'); break;
-                case 'D': var_val(s,'D'); break;
-                case 'E': var_val(s,'E'); break;
-                case 'F': var_val(s,'F'); break;
-                case 'X': var_val(s,'X'); break;
-                case 'Y': var_val(s,'Y'); break;
-                case 'Z': var_val(s,'Z'); break;
-                case 'N': {char n = '\n'; push_CHAR(s,n); break;}
-                case 'S': {char space = ' '; push_CHAR(s,space); break;}
-                case 'c': char_conversion(s); break;
-                case 'f': double_conversion(s); break;
-                case 'i': long_conversion(s); break;
-                case 's': string_conversion(s); break;
-                case '+': CASE_OP(ADD); break;
-                case '-': CASE_OP(SUB); break;
-                case '*': CASE_OP(MULT); break;
-                case '/': CASE_OP(DIV); break;
-                case '(': CASE_SOLO(--); break;
-                case ')': CASE_SOLO(++); break;
-                case '%': CASE_BIN(MOD); break;
-                case '#': CASE_OP(pow); break;
-                case '&': CASE_BIN(AND); break;
-                case '|': CASE_BIN(OR); break;
-                case '^': CASE_BIN(XOR); break;
-                case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;}
-                case '_': push(s,top(s)); break;
-                case ';': pop(s); break;
-                case '\\': SWAP(s); break;
-                case '@': ROTATE(s); break;
-                case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
-            }    
-        }
-    }   
-    
-    
+            }  
+        }   
 }
 
