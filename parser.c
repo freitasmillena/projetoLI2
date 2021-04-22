@@ -71,36 +71,72 @@ void logic_e(char* c, Stack* s) {
 /**
 * Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o sei tipo de dados.
 */
-#define LOGIC_BIN(op)               \
-    {                               \
-    long X;                         \
-    long Y;                         \
-    if (x==1) {                     \
-        X = pop_LONG(s);            \
-        int y = idtype(s);          \
-        if (y == 1) {               \
-            Y = pop_LONG(s);        \
-        }                           \
-        else {                      \
-            long_conversion(s);     \
-            Y = pop_LONG(s);        \
-        }                           \
-    }                               \
-    else {                          \
-        long_conversion(s);         \
-        X = pop_LONG(s);            \
-        int y = idtype(s);          \
-        if (y == 1) {               \
-            Y = pop_LONG(s);        \
-        }                           \
-        else {                      \
-            long_conversion(s);     \
-            Y = pop_LONG(s);        \
-        }                           \
-    }                               \
-    if (op(X,Y)) push_LONG(s,1);    \
-    else push_LONG(s,0);            \
-    }                               \
+
+
+#define LOGIC_BIN(op)                       \
+    {                                       \
+    if (x==1) {                             \
+        long X = pop_LONG(s);               \
+        int y = idtype(s);                  \
+        if (y == 1) {                       \
+            long Y = pop_LONG(s);           \
+            if (op(X,Y)) push_LONG(s,1);    \
+            else push_LONG(s,0);            \
+        }                                   \
+        else if (y == 2) {                  \
+           double Y = pop_DOUBLE(s);        \
+           if (op(X,Y)) push_LONG(s,1);     \
+           else push_LONG(s,0);             \
+        }                                   \
+        else if (y == 3) {                  \
+            long_conversion(s);             \
+            long Y = pop_LONG(s);           \
+            if (op(X,Y)) push_LONG(s,1);    \
+            else push_LONG(s,0);            \
+        }                                   \
+    }                                       \
+    else if (x == 2) {                      \
+        double X = pop_DOUBLE(s);           \
+        int y = idtype(s);                  \
+        if (y == 1) {                       \
+            long Y = pop_LONG(s);           \
+            if (op(X,Y)) push_LONG(s,1);    \
+            else push_LONG(s,0);            \
+        }                                   \
+        else if (y == 2) {                  \
+           double Y = pop_DOUBLE(s);        \
+           if (op(X,Y)) push_LONG(s,1);     \
+           else push_LONG(s,0);             \
+        }                                   \
+        else if (y == 3) {                  \
+            long_conversion(s);             \
+            long Y = pop_LONG(s);           \
+            if (op(X,Y)) push_LONG(s,1);    \
+            else push_LONG(s,0);            \
+        }                                   \
+    }                                       \
+    else {                                  \
+        long_conversion(s);                 \
+        long X = pop_LONG(s);               \
+        int y = idtype(s);                  \
+        if (y == 1) {                       \
+            long Y = pop_LONG(s);           \
+            if (op(X,Y)) push_LONG(s,1);    \
+            else push_LONG(s,0);            \
+        }                                   \
+        else if (y == 2) {                  \
+           double Y = pop_DOUBLE(s);        \
+           if (op(X,Y)) push_LONG(s,1);     \
+           else push_LONG(s,0);             \
+        }                                   \
+        else if (y == 3) {                  \
+            long_conversion(s);             \
+            long Y = pop_LONG(s);           \
+            if (op(X,Y)) push_LONG(s,1);    \
+            else push_LONG(s,0);            \
+        }                                   \
+    }                                       \
+    }                                       \
 
 
 #define CASE_BIN(op)                                        \
