@@ -63,10 +63,45 @@ void logic_e(char* c, Stack* s) {
 #define OR(x,y) x | y
 #define XOR(x,y) x ^ y
 #define NOT(x) ~x
+#define EQUAL(x,y) x == y
+#define GREATER(x,y) x < y
+#define LESS(x,y) x > y
+
 
 /**
 * Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o sei tipo de dados.
 */
+#define LOGIC_BIN(op)               \
+    {                               \
+    long X;                         \
+    long Y;                         \
+    if (x==1) {                     \
+        X = pop_LONG(s);            \
+        int y = idtype(s);          \
+        if (y == 1) {               \
+            Y = pop_LONG(s);        \
+        }                           \
+        else {                      \
+            long_conversion(s);     \
+            Y = pop_LONG(s);        \
+        }                           \
+    }                               \
+    else {                          \
+        long_conversion(s);         \
+        X = pop_LONG(s);            \
+        int y = idtype(s);          \
+        if (y == 1) {               \
+            Y = pop_LONG(s);        \
+        }                           \
+        else {                      \
+            long_conversion(s);     \
+            Y = pop_LONG(s);        \
+        }                           \
+    }                               \
+    if (op(X,Y)) push_LONG(s,1);    \
+    else push_LONG(s,0);            \
+    }                               \
+
 
 #define CASE_BIN(op)                                        \
                                                             \
@@ -247,9 +282,9 @@ void parse(char *line, Stack* s) {
                     case '\\': SWAP(s); break;
                     case '@': ROTATE(s); break;
                     case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
-                    case '=': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X == Y) push_LONG(s, 1); else push_LONG(s, 0); break;}
-                    case '>': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X < Y) push_LONG(s, 1); else push_LONG(s, 0); break;}
-                    case '<': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X > Y) push_LONG(s, 1); else push_LONG(s, 0); break;}
+                    case '=': LOGIC_BIN(EQUAL); break;
+                    case '>': LOGIC_BIN(GREATER); break;
+                    case '<': LOGIC_BIN(LESS); break;
                     case '?': {long X = pop_LONG(s); long Y = pop_LONG(s); long Z = pop_LONG(s); if (Z != 0) push_LONG(s, Y); else push_LONG(s, X); break;}
                     case '!': {long X = pop_LONG(s); if (X == 0) push_LONG(s, 1); else push_LONG(s, 0); break;}
                     case 'e': logic_e(token, s); break;
