@@ -236,6 +236,11 @@ void parse(char *line, Stack* s) {
                     case '\\': SWAP(s); break;
                     case '@': ROTATE(s); break;
                     case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
+                    case '=': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X == Y) push_LONG(s, 1); else push_LONG(s, 0); break;}
+                    case '>': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X < Y) push_LONG(s, 1); else push_LONG(s, 0); break;}
+                    case '<': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X > Y) push_LONG(s, 1); else push_LONG(s, 0); break;}
+                    case '?': {long X = pop_LONG(s); long Y = pop_LONG(s); long Z = pop_LONG(s); if (Z != 0) push_LONG(s, Y); else push_LONG(s, X); break;}
+                    case '!': {long X = pop_LONG(s); if (X == 0) push_LONG(s, 1); else push_LONG(s, 0); break;}
                 }
             }  
         }   
