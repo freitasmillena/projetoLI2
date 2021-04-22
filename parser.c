@@ -41,10 +41,10 @@ void logic_e(char* c, Stack* s) {
     char x = c[1];
 
     switch(x) {
-        case '&': {long X = pop_LONG(s); long Y = pop_LONG(s); if (Y != 0) push_LONG(s, X); else push_LONG(s, 0); break;}
-        case '|': {long X = pop_LONG(s); long Y = pop_LONG(s); if (Y == 0) push_LONG(s, X); else push_LONG(s, 0); break;}
-        case '>': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X > Y) push_LONG(s, X); else push_LONG(s, Y); break;}
-        case '<': {long X = pop_LONG(s); long Y = pop_LONG(s); if (X < Y) push_LONG(s, X); else push_LONG(s, Y); break;}
+        case '&': LOGIC_BIN_E_IF(EIF); break; 
+        case '|': LOGIC_BIN_E_OR(EOR); break; 
+        case '>': LOGIC_BIN_E(EGREATER); break;
+        case '<': LOGIC_BIN_E(ELESS); break;
     }
 }
 
@@ -66,6 +66,10 @@ void logic_e(char* c, Stack* s) {
 #define EQUAL(x,y) x == y
 #define GREATER(x,y) x < y
 #define LESS(x,y) x > y
+#define EGREATER(x,y) x > y
+#define ELESS(x,y) x < y
+#define EIF(x,y) y != 0
+#define EOR(x,y) y == 0
 
 
 /**
@@ -137,6 +141,42 @@ void logic_e(char* c, Stack* s) {
         }                                   \
     }                                       \
     }                                       \
+    
+    #define LOGIC_BIN_E(op)             \
+        {                               \
+        DATA X = pop(s);                \
+        DATA Y = pop(s);                \
+                                        \
+        long y = Y.x.LONG;              \
+        long x = X.x.LONG;              \
+                                        \
+        if (op(x,y)) push_LONG(s,x);    \
+        else push_LONG(s,y);            \
+        }                               \
+
+    #define LOGIC_BIN_E_IF(op)          \
+        {                               \
+        DATA X = pop(s);                \
+        DATA Y = pop(s);                \
+                                        \
+        long y = Y.x.LONG;              \
+        long x = X.x.LONG;              \
+                                        \
+        if (op(x,y)) push_LONG(s,x);    \
+        else push_LONG(s,0);            \
+        }                               \
+
+    #define LOGIC_BIN_E_OR(op)          \
+        {                               \
+        DATA X = pop(s);                \
+        DATA Y = pop(s);                \
+                                        \
+        long y = Y.x.LONG;              \
+        long x = X.x.LONG;              \
+                                        \
+        if (op(x,y)) push_LONG(s,x);    \
+        else push_LONG(s,1);            \
+        }                               \
 
 
 #define CASE_BIN(op)                                        \
