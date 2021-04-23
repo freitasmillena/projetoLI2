@@ -37,17 +37,6 @@ void ROTATE(Stack* s) {
 
 }
 
-void logic_e(char* c, Stack* s) {
-    char x = c[1];
-
-    switch(x) {
-        case '&': LOGIC_BIN_E_IF(EIF); break; 
-        case '|': LOGIC_BIN_E_OR(EOR); break; 
-        case '>': LOGIC_BIN_E(EGREATER); break;
-        case '<': LOGIC_BIN_E(ELESS); break;
-    }
-}
-
 /**
 * \brief Definição das operações
 */
@@ -257,6 +246,17 @@ void var_top (Stack* s, char c, DATA *v) {
     
 }
 
+
+void logic_e(char* c, Stack* s) {
+    char x = c[1];
+
+    switch(x) {
+        case '&': LOGIC_BIN_E_IF(EIF); break; 
+        case '|': LOGIC_BIN_E_OR(EOR); break; 
+        case '>': LOGIC_BIN_E(EGREATER); break;
+        case '<': LOGIC_BIN_E(ELESS); break;
+    }
+}
 
 
 
