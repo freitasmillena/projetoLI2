@@ -129,6 +129,11 @@ void ROTATE(Stack* s) {
 
 }
 
+/**
+ * \brief Função que atribui valor à uma letra
+ * 
+ * @param s,c e v, Stack, char recebido e apontador para uma struct DATA
+ */
 void var_top (Stack* s, char c, DATA *v) {
     v[c-65] = top(s); ///< o elemento que ocupa a posição c-65 tomará o valor do topo da stack. Por exemplo, para A, o código ASCII é 65 e portanto v[0] = topo da stack
     
