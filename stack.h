@@ -53,7 +53,7 @@ void string_conversion (Stack* s);
 //Macros para conversão de tipos de dados.
 
 #define DATA_CONVERSION_PROTO(function,input_type,output_type) \
-    DATA function(input_type val);  
+    DATA function(input_type val);                             \
 
 DATA_CONVERSION_PROTO(charToDouble,char, DOUBLE)
 DATA_CONVERSION_PROTO(charToLong,char, LONG)
