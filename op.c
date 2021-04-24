@@ -100,7 +100,11 @@ CASE_OP(mult_operation, MULT)
 CASE_OP(div_operation, DIV)
 CASE_OP(pow_operation, pow)
 
-//Função para trocar os últimos dois elementos da stack
+/**
+ * \brief Função para trocar os últimos dois elementos da stack
+ * 
+ * @param s Stack
+ */
 void SWAP(Stack* s) {
     DATA x,y;
     x = s->elements[s->sp]; ///< Elemento do topo da stack
@@ -109,7 +113,11 @@ void SWAP(Stack* s) {
     s->elements[s->sp - 1] = x; ///< x passa estar na posição antiga de y
 }
 
-//Função para trocar os três últimos elementos da stack
+/**
+ * \brief Função para trocar os três últimos elementos da stack
+ * 
+ * @param s Stack
+ */
 void ROTATE(Stack* s) {
     DATA x,y,z;
     x = s->elements[s->sp]; ///< x é o elemento do topo da stack

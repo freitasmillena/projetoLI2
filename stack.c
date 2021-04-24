@@ -16,6 +16,8 @@
 //Identificação de tipos
 /**
 * \brief Indicar o tipo de dados que está na stack.
+* 
+* @returns r , Tipo do elemento
 */
 int idtype(Stack* s) {
     int r = 0;
@@ -48,8 +50,6 @@ DATA_CONVERSION(charToLong,char, LONG)
 DATA_CONVERSION(longToDouble,long, DOUBLE)
 DATA_CONVERSION(longToChar,long, CHAR)
 DATA_CONVERSION(doubleToLong,double, LONG)
-
-//no caso de double -> char, acredito que o ideal seja double -> long, long -> char 
 
 
 int has_type(DATA n, int mask) {
