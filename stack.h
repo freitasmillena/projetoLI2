@@ -10,20 +10,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum {LONG = 1, DOUBLE = 2, CHAR = 3, STRING = 4} TYPE;
+/**
+ * @brief Enum para tipos de dados possíveis
+ */
+typedef enum { /**Enum de tipo TYPE */
+    LONG = 1, /**Dados tipo long */
+    DOUBLE = 2, /**Dados tipo double */
+    CHAR = 3, /**Dados tipo char */
+    STRING = 4 /**Dados tipo string */
+    } TYPE;
 
+/**
+ * \brief Máscaras para integers e numbers
+ */
 #define INTEGER (LONG | CHAR)
 #define NUMBER  (INTEGER | DOUBLE)
 
-typedef struct {
-  TYPE type;
-  union {
-  long LONG;
-  double DOUBLE;
-  char CHAR;
-  char *STRING;
-  } x;
-} DATA;
+/**
+ * \brief Estrutura que guarda dados e seu respetivo tipo
+ */
+typedef struct { /** Estrutura do tipo DATA */
+  TYPE type; /** Tipo de dados guardado pela struct */
+  union { /**Union para guardar o dado no seu respetivo tipo */
+  long LONG; /** Valor do tipo long */
+  double DOUBLE; /** Valor do tipo double */
+  char CHAR; /** Valor do tipo char */
+  char *STRING; /** Valor do tipo string */
+  } x; /** Union x */
+} DATA; /** Struct DATA */
 
 
 /**

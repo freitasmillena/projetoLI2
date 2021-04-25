@@ -10,6 +10,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+/**
+ * \brief Macro que contém o nome das operações matemáticas e o que é suposto cada uma fazer
+ * @param x primeiro elemento retirado da stack para efetuar a operação
+ * @param y segundo elemento retirado da stack para efetuar a operação
+ */
 #define ADD(x,y) x + y
 #define SUB(x,y) x - y
 #define MULT(x,y) x * y

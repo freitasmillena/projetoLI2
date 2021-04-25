@@ -14,6 +14,11 @@
 * Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o sei tipo de dados.
 */
 
+/**
+ * @brief Macro responsável pelas operações binárias como and, or, xor e mod
+ * @param function Nome da função que será usada
+ * @param op operação a efetuar
+ */
 #define CASE_BIN(function, op)                                  \
     void function(int x, Stack* s) {                            \
         if (x == 1) {                                           \
@@ -33,7 +38,11 @@ CASE_BIN(or_operation, OR)
 CASE_BIN(xor_operation, XOR)
 CASE_BIN(mod_operation, MOD)                                                   
 
-
+/**
+ * @brief Macro responsável pelas operações com apenas um elemento como incrementar e decrementar
+ * @param function Nome da função que será usada
+ * @param op operação a efetuar
+ */
 #define CASE_SOLO(function, op)            \
     void function(int x, Stack* s){        \
         if (x == 1) {                      \
@@ -57,7 +66,11 @@ CASE_SOLO(dec_operation, --)
 CASE_SOLO(inc_operation, ++)
 
 
-
+/**
+ * @brief Macro responsável pelas operações que recebem dois elementos como soma, subtração, divisão, multiplicação e potência
+ * @param function Nome da função que será usada
+ * @param op operação a efetuar
+ */
 #define CASE_OP(function, op)                                   \
     void function(int x, Stack* s) {                            \
         if (x == 1)    {                                        \
@@ -103,7 +116,7 @@ CASE_OP(pow_operation, pow)
 /**
  * \brief Função para trocar os últimos dois elementos da stack
  * 
- * @param s Stack
+ * @param s Recebe apontador para a Stack
  */
 void SWAP(Stack* s) {
     DATA x,y;
@@ -116,7 +129,7 @@ void SWAP(Stack* s) {
 /**
  * \brief Função para trocar os três últimos elementos da stack
  * 
- * @param s Stack
+ * @param s Recebe apontador para a Stack
  */
 void ROTATE(Stack* s) {
     DATA x,y,z;
@@ -132,7 +145,9 @@ void ROTATE(Stack* s) {
 /**
  * \brief Função que atribui valor à uma letra
  * 
- * @param s,c e v, Stack, char recebido e apontador para uma struct DATA
+ * @param s apontador para a Stack
+ * @param c char recebido
+ * @param v apontador para uma struct DATA
  */
 void var_top (Stack* s, char c, DATA *v) {
     v[c-65] = top(s); ///< o elemento que ocupa a posição c-65 tomará o valor do topo da stack. Por exemplo, para A, o código ASCII é 65 e portanto v[0] = topo da stack
