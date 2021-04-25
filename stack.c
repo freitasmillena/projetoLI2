@@ -15,8 +15,8 @@
 
 //Identificação de tipos
 /**
-* \brief Indicar o tipo de dados que está na stack.
-* 
+* \brief Função que indica o tipo do dado que está no topo da stack.
+* @param s Apontador para a stack 
 * @returns r , Tipo do elemento
 */
 int idtype(Stack* s) {
@@ -35,7 +35,12 @@ int idtype(Stack* s) {
 
 //Conversão de tipos
 
-//Macro para conversão de tipos
+/**
+ * \brief Macro para criar funções que efetue conversões entre os diversos tipos disponíveis na stack: double, long, char e string
+ * @param function Nome da função
+ * @param input_type tipo do input
+ * @param output_type tipo do output
+ */
 #define DATA_CONVERSION(function,input_type,output_type)    \
 DATA function(input_type val)                               \
 {                                                           \
@@ -144,7 +149,7 @@ DATA pop(Stack* s) {
 /**
  * \brief Função que imprime a stack
  * 
- * @param s Stack
+ * @param s Apontador para a Stack
  */
 void print_stack(Stack *s) {
     
@@ -165,8 +170,11 @@ void print_stack(Stack *s) {
     
 }
 
-//Macros para push e pop
 
+/**
+ * \brief Macro para efetuar operações de acordo com disponíveis dos elementos na stack: double, long, char e string
+ * 
+ */
 #define STACK_OPERATION(_type, _name)         \
     void push_##_name(Stack *s, _type val) {  \
         DATA n;                               \
@@ -185,7 +193,10 @@ STACK_OPERATION(double, DOUBLE)
 STACK_OPERATION(char, CHAR)
 STACK_OPERATION(char *, STRING)
 
-//comando c
+/**
+ * \brief Função para conversão de um elemento para o tipo char
+ * @param s Apontador para a stack
+ */
 void char_conversion (Stack* s) {
     int x = idtype(s);
     switch (x) {
@@ -204,7 +215,10 @@ void char_conversion (Stack* s) {
     }
 }
 
-// comando i
+/**
+ * \brief Função para conversão de um elemento para o tipo long
+ * @param s Apontador para a stack
+ */
 void long_conversion (Stack* s) {
     int x = idtype(s);
     switch (x) {
@@ -229,7 +243,10 @@ void long_conversion (Stack* s) {
     }
 }
 
-// comando f
+/**
+ * \brief Função para conversão de um elemento para o tipo double
+ * @param s Apontador para a stack
+ */
 void double_conversion(Stack* s) {
     int x = idtype(s);
     switch (x) {
@@ -254,7 +271,10 @@ void double_conversion(Stack* s) {
     }
 }
 
-//comando s
+/**
+ * \brief Função para conversão de um elemento para o tipo string
+ * @param s Apontador para a stack
+ */
 void string_conversion(Stack* s) {
     int x = idtype(s);
     char str[40];

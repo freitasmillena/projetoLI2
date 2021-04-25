@@ -43,7 +43,7 @@ typedef struct { /** Estrutura do tipo DATA */
 /**
  * \brief Representação da stack através de uma estrutura
  */
-typedef struct {
+typedef struct { 
     int sp; ///< Stack pointer -> Aponta para o elemento no topo da Stack
     DATA *elements; ///< Array para conter os elementos da Stack
     int capacity; ///< Capacidade total atual da Stack

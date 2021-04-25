@@ -15,7 +15,7 @@
 */
 
 /**
- * @brief Macro responsável pelas operações binárias como and, or, xor e mod
+ * \brief Macro responsável pelas operações binárias como and, or, xor e mod
  * @param function Nome da função que será usada
  * @param op operação a efetuar
  */
@@ -39,7 +39,7 @@ CASE_BIN(xor_operation, XOR)
 CASE_BIN(mod_operation, MOD)                                                   
 
 /**
- * @brief Macro responsável pelas operações com apenas um elemento como incrementar e decrementar
+ * \brief Macro responsável pelas operações com apenas um elemento como incrementar e decrementar
  * @param function Nome da função que será usada
  * @param op operação a efetuar
  */
@@ -67,7 +67,7 @@ CASE_SOLO(inc_operation, ++)
 
 
 /**
- * @brief Macro responsável pelas operações que recebem dois elementos como soma, subtração, divisão, multiplicação e potência
+ * \brief Macro responsável pelas operações que recebem dois elementos como soma, subtração, divisão, multiplicação e potência
  * @param function Nome da função que será usada
  * @param op operação a efetuar
  */
@@ -154,7 +154,11 @@ void var_top (Stack* s, char c, DATA *v) {
     
 }
 
-
+/**
+ * \brief Macro responsável pelas operações lógicas como =, <, >
+ * @param function Nome da função que será usada
+ * @param op operação a efetuar
+ */
 #define LOGIC_BIN(function, op)             \
     void function(int x, Stack* s) {        \
     if (x==2) {                             \
