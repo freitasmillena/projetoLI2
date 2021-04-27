@@ -5,7 +5,9 @@
  * Description : Op -> (Guião1 e Guião2) - Trabalho de LI2 2020/2021
  * 
  * Neste ficheiro op.c tem-se como objetivo a implementação de operações matemáticas. Operações como: soma, subtração, multiplicação, divisão, entre outras.
+ *
  */
+
 #include <stdio.h>
 #include "stack.h"
 #include "op.h"
