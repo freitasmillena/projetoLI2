@@ -89,6 +89,7 @@ DATA_CONVERSION_PROTO(doubleToLong,double, LONG) ///< Declaração da função g
 /**
  * \brief Declaração da Macro para efetuar operações de acordo com disponíveis dos elementos na stack: double, long, char e string
  * 
+ * Esta macro vai receber:
  * @param _type tipo do elemento
  * @param _name nome correspondente ao tipo: LONG, DOUBLE, CHAR, STRING
  */

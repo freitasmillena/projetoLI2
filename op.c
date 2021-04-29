@@ -64,8 +64,8 @@ CASE_BIN(mod_operation, MOD)
         }                                  \
     }                                      \
 
-CASE_SOLO(dec_operation, --)  ///< Decrementação 
-CASE_SOLO(inc_operation, ++)  ///< Incrementação
+CASE_SOLO(dec_operation, --)   
+CASE_SOLO(inc_operation, ++)  
 
 
 /**
@@ -75,7 +75,8 @@ CASE_SOLO(inc_operation, ++)  ///< Incrementação
  *
  * @param function Nome da função que será usada
  * @param op operação a efetuar
- */
+ * 
+*/
 #define CASE_OP(function, op)                                   \
     void function(int x, Stack* s) {                            \
         if (x == 1)    {                                        \
@@ -112,11 +113,11 @@ CASE_SOLO(inc_operation, ++)  ///< Incrementação
             }                                                   \
     }                                                           \
                                                            
-CASE_OP(add_operation, ADD)      ///< Soma
-CASE_OP(sub_operation, SUB)      ///< Subtração
-CASE_OP(mult_operation, MULT)    ///< Multiplicação
-CASE_OP(div_operation, DIV)      ///< Divisão
-CASE_OP(pow_operation, pow)      ///< Potência
+CASE_OP(add_operation, ADD)      
+CASE_OP(sub_operation, SUB)      
+CASE_OP(mult_operation, MULT)    
+CASE_OP(div_operation, DIV)      
+CASE_OP(pow_operation, pow)  
 
 /**
  * \brief Função para trocar os últimos dois elementos da stack

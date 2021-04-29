@@ -10,21 +10,110 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ADD(x,y) x + y /** Macro para operação de soma */
-#define SUB(x,y) x - y /** Macro para operação de subtração */
-#define MULT(x,y) x * y /** Macro para operação de multiplicação */
-#define DIV(x,y) x / y /** Macro para operação de divisão */
-#define MOD(x,y) x % y /** Macro para operação de resto da divisão */
-#define AND(x,y) x & y /** Macro para operação binária and */
-#define OR(x,y) x | y /** Macro para operação binária or */
-#define XOR(x,y) x ^ y /** Macro para operação binária xor */
-#define EQUAL(x,y) x == y /** Macro para operação lógica igual */
-#define GREATER(x,y) x < y /** Macro para operação lógica maior */
-#define LESS(x,y) x > y /** Macro para operação lógica menor */
-#define EGREATER(x,y) x > y /** Macro para operação lógica e> */
-#define ELESS(x,y) x < y /** Macro para operação lógica e< */
-#define EIF(x,y) y != 0 /** Macro para operação lógica e& */
-#define EOR(x,y) y == 0 /** Macro para operação lógica e| */
+/**
+ * \brief Macro para operação de soma x + y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define ADD(x,y) x + y 
+
+/**
+ * \brief Macro para operação de subtração x - y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define SUB(x,y) x - y 
+
+/**
+ * \brief Macro para operação de multiplicação x * y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define MULT(x,y) x * y 
+
+/**
+ * \brief Macro para operação de divisão x / y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define DIV(x,y) x / y 
+
+/**
+ * \brief Macro para operação de resto de divisão x % y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define MOD(x,y) x % y 
+
+/**
+ * \brief Macro para operação lógica and x & y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define AND(x,y) x & y 
+
+/**
+ * \brief Macro para operação lógica or x | y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define OR(x,y) x | y 
+
+/**
+ * \brief Macro para operação lógica xor x ^ y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define XOR(x,y) x ^ y 
+
+/**
+ * \brief Macro para operação lógica x == y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define EQUAL(x,y) x == y 
+
+/**
+ * \brief Macro para operação lógica x < y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define GREATER(x,y) x < y 
+
+/**
+ * \brief Macro para operação lógica x > y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define LESS(x,y) x > y 
+
+/**
+ * \brief Macro para operação de e lógica  e> x > y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define EGREATER(x,y) x > y
+
+/**
+ * \brief Macro para operação de e lógica  e< x < y
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define ELESS(x,y) x < y 
+
+/**
+ * \brief Macro para operação de e lógica e&  y!= 0
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define EIF(x,y) y != 0 
+
+/**
+ * \brief Macro para operação de e lógica e| y == 0
+ * @param x primeiro elemento
+ * @param y segundo elemento
+ */
+#define EOR(x,y) y == 0 
 
 /**
  * \brief Declaração da macro responsável pelas operações binárias como and, or, xor e mod
@@ -32,9 +121,6 @@
  * Esta macro vai receber : 
  * @param function Nome da função que será usada
  * @param op operação a efetuar
- *
- * Para operações como and, or, xor e mod apenas trabalhamos com variaveís do tipo long.
- *
  */
 #define CASE_BIN_PROTO(function, op)                               \
     void function(Stack* s);                                       \

@@ -50,12 +50,11 @@ DATA function(input_type val) /** Macro chama função para o input type */     
   return v;  /** retorna o valor após a conversão */                                                 \
 }                                                                                                    \
 
-DATA_CONVERSION(charToDouble,char, DOUBLE) ///< Função gerada pela macro DATA_CONVERSION para converter de char para double
-DATA_CONVERSION(charToLong,char, LONG) ///< Função gerada pela macro DATA_CONVERSION para converter de char para long
-DATA_CONVERSION(longToDouble,long, DOUBLE) ///< Função gerada pela macro DATA_CONVERSION para converter de long para double
-DATA_CONVERSION(longToChar,long, CHAR) ///< Função gerada pela macro DATA_CONVERSION para converter de long para char
-DATA_CONVERSION(doubleToLong,double, LONG) ///< Função gerada pela macro DATA_CONVERSION para converter de double para long
-
+DATA_CONVERSION(charToDouble,char, DOUBLE) 
+DATA_CONVERSION(charToLong,char, LONG)     
+DATA_CONVERSION(longToDouble,long, DOUBLE) 
+DATA_CONVERSION(longToChar,long, CHAR)     
+DATA_CONVERSION(doubleToLong,double, LONG) 
 
 
 /**
@@ -71,6 +70,8 @@ Stack* create_stack() {
     
     return s; ///< retorna a stack criada
 } 
+
+
 /**
  * \brief Função que retorna o topo da stack
  * 
@@ -171,6 +172,7 @@ void print_stack(Stack *s) {
 /**
  * \brief Macro para efetuar operações de acordo com disponíveis dos elementos na stack: double, long, char e string
  * 
+ * Esta macro vai receber:
  * @param _type tipo do elemento
  * @param _name nome correspondente ao tipo: LONG, DOUBLE, CHAR, STRING
  */
@@ -187,10 +189,12 @@ void print_stack(Stack *s) {
         return n.x._name; /** retorna o elemento */                                                              \
     }                                                                                                            \
 
-STACK_OPERATION(long, LONG) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo long
-STACK_OPERATION(double, DOUBLE) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo double
-STACK_OPERATION(char, CHAR) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo char
-STACK_OPERATION(char *, STRING) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo string
+STACK_OPERATION(long, LONG) 
+STACK_OPERATION(double, DOUBLE) 
+STACK_OPERATION(char, CHAR) 
+STACK_OPERATION(char *, STRING) 
+
+//Conversão de tipos
 
 /**
  * \brief Função para conversão de um elemento para o tipo char
