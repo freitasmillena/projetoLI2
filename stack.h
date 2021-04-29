@@ -21,9 +21,13 @@ typedef enum { /**Enum de tipo TYPE */
     } TYPE; /** Nome da enum */
 
 /**
- * \brief Máscaras para integers e numbers
+ * \brief Máscaras para integers 
  */
 #define INTEGER (LONG | CHAR) /** integer é long ou char */
+
+/**
+ * \brief Máscaras para numbers 
+ */
 #define NUMBER  (INTEGER | DOUBLE) /** number é integer ou double */
 
 /**
@@ -52,7 +56,6 @@ typedef struct {
 
 //Declarações de funções
 int idtype(Stack* s);
-int has_type(DATA n, int mask);
 Stack* create_stack();
 DATA top(Stack* s);
 void push(Stack *s, DATA n);
