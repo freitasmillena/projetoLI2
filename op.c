@@ -5,19 +5,26 @@
  * Description : Op -> (Guião1 e Guião2) - Trabalho de LI2 2020/2021
  * 
  * Neste ficheiro op.c tem-se como objetivo a implementação de operações matemáticas. Operações como: soma, subtração, multiplicação, divisão, entre outras.
+ *
  */
+
 #include <stdio.h>
 #include "stack.h"
 #include "op.h"
 
 /**
-* Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o sei tipo de dados.
+* Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o seu tipo de dados.
 */
 
 /**
  * \brief Macro responsável pelas operações binárias como and, or, xor e mod
+ *
+ * Esta macro vai receber : 
  * @param function Nome da função que será usada
  * @param op operação a efetuar
+ *
+ * Para operações como and, or, xor e mod apenas trabalhamos com variaveís do tipo long.
+ *
  */
 #define CASE_BIN(function, op)        \
     void function(Stack* s) {         \
@@ -35,6 +42,8 @@ CASE_BIN(mod_operation, MOD)
  * \brief Macro responsável pelas operações com apenas um elemento como incrementar e decrementar
  * @param function Nome da função que será usada
  * @param op operação a efetuar
+ *
+ * Para operações com apenas uma variavel pode ser long ou double.
  */
 #define CASE_SOLO(function, op)            \
     void function(int x, Stack* s){        \
@@ -55,14 +64,18 @@ CASE_BIN(mod_operation, MOD)
         }                                  \
     }                                      \
 
-CASE_SOLO(dec_operation, --)
-CASE_SOLO(inc_operation, ++)
+CASE_SOLO(dec_operation, --)  ///< Decrementação 
+CASE_SOLO(inc_operation, ++)  ///< Incrementação
 
 
 /**
- * \brief Macro responsável pelas operações que recebem dois elementos como soma, subtração, divisão, multiplicação e potência
+ * \brief Macro responsável pelas operações que recebem dois elementos como soma, subtração, divisão, multiplicação e potência.
+ * Para operações como +, -, *, / e ^ trabalhamos com variaveís do tipo long e double.
+ * Para esta macro tivemos de ter em conta o caso em que as duas variaveis não fazerem parte do mesmo tipo de variavel.
+ *
  * @param function Nome da função que será usada
  * @param op operação a efetuar
+ *
  */
 #define CASE_OP(function, op)                                   \
     void function(int x, Stack* s) {                            \
@@ -100,11 +113,11 @@ CASE_SOLO(inc_operation, ++)
             }                                                   \
     }                                                           \
                                                            
-CASE_OP(add_operation, ADD)
-CASE_OP(sub_operation, SUB)
-CASE_OP(mult_operation, MULT)
-CASE_OP(div_operation, DIV)
-CASE_OP(pow_operation, pow)
+CASE_OP(add_operation, ADD)      ///< Soma
+CASE_OP(sub_operation, SUB)      ///< Subtração
+CASE_OP(mult_operation, MULT)    ///< Multiplicação
+CASE_OP(div_operation, DIV)      ///< Divisão
+CASE_OP(pow_operation, pow)      ///< Potência
 
 /**
  * \brief Função para trocar os últimos dois elementos da stack
@@ -113,10 +126,10 @@ CASE_OP(pow_operation, pow)
  */
 void SWAP(Stack* s) {
     DATA x,y;
-    x = s->elements[s->sp]; ///< Elemento do topo da stack
-    y = s->elements[s->sp - 1]; ///< Elemento anterior 
-    s->elements[s->sp] = y; ///< y passa a estar no topo da stack
-    s->elements[s->sp - 1] = x; ///< x passa estar na posição antiga de y
+    x = s->elements[s->sp];        ///< Elemento do topo da stack
+    y = s->elements[s->sp - 1];    ///< Elemento anterior 
+    s->elements[s->sp] = y;        ///< y passa a estar no topo da stack
+    s->elements[s->sp - 1] = x;    ///< x passa estar na posição antiga de y
 }
 
 /**
@@ -126,17 +139,17 @@ void SWAP(Stack* s) {
  */
 void ROTATE(Stack* s) {
     DATA x,y,z;
-    x = s->elements[s->sp]; ///< x é o elemento do topo da stack
-    y = s->elements[s->sp - 1]; ///< y é o elemento abaixo de x
-    z = s->elements[s->sp - 2]; ///< z é o elemento abaixo de y
-    s->elements[s->sp] = z; ///< O topo da stack agora possui o elemento z
-    s->elements[s->sp - 1] = x; ///< O endereço onde havia o y guardado passa a guardar o elemento x
-    s->elements[s->sp - 2] = y; ///< O endereço onde havia o z guardado passa a guardar o elemento y
+    x = s->elements[s->sp];         ///< x é o elemento do topo da stack
+    y = s->elements[s->sp - 1];     ///< y é o elemento abaixo de x
+    z = s->elements[s->sp - 2];     ///< z é o elemento abaixo de y
+    s->elements[s->sp] = z;         ///< O topo da stack agora possui o elemento z
+    s->elements[s->sp - 1] = x;     ///< O endereço onde havia o y guardado passa a guardar o elemento x
+    s->elements[s->sp - 2] = y;     ///< O endereço onde havia o z guardado passa a guardar o elemento y
 
 }
 
 /**
- * \brief Função que atribui valor à uma letra
+ * \brief Função que atribui valor a uma letra
  * 
  * @param s apontador para a Stack
  * @param c char recebido
@@ -149,6 +162,9 @@ void var_top (Stack* s, char c, DATA *v) {
 
 /**
  * \brief Macro responsável pelas operações lógicas como =, <, >
+ * Para operações =, < e > trabalhamos com variaveís do tipo long e double.
+ * Para esta macro, assim com a macro CASE_OP, tivemos de ter em conta o caso em que as duas variaveis não pertencem ao mesmo tipo.
+ *
  * @param function Nome da função que será usada
  * @param op operação a efetuar
  */
