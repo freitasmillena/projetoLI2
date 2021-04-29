@@ -18,13 +18,13 @@ typedef enum { /**Enum de tipo TYPE */
     DOUBLE = 2, /**Dados tipo double */
     CHAR = 3, /**Dados tipo char */
     STRING = 4 /**Dados tipo string */
-    } TYPE;
+    } TYPE; /** Nome da enum */
 
 /**
  * \brief Máscaras para integers e numbers
  */
-#define INTEGER (LONG | CHAR)
-#define NUMBER  (INTEGER | DOUBLE)
+#define INTEGER (LONG | CHAR) /** integer é long ou char */
+#define NUMBER  (INTEGER | DOUBLE) /** number é integer ou double */
 
 /**
  * \brief Estrutura que guarda dados e seu respetivo tipo
@@ -50,6 +50,7 @@ typedef struct {
 
 }Stack;
 
+//Declarações de funções
 int idtype(Stack* s);
 int has_type(DATA n, int mask);
 Stack* create_stack();
@@ -66,23 +67,34 @@ void string_conversion (Stack* s);
 
 //Macros para conversão de tipos de dados.
 
-#define DATA_CONVERSION_PROTO(function,input_type,output_type) \
-    DATA function(input_type val);                             \
+/**
+ * \brief Declaração da Macro para criar funções que efetue conversões entre os diversos tipos disponíveis na stack: double, long, char e string
+ * @param function Nome da função
+ * @param input_type tipo do input
+ * @param output_type tipo do output
+ */
+#define DATA_CONVERSION_PROTO(function,input_type,output_type)                 \
+    DATA function(input_type val); /** Macro chama função para o input type */ \
 
-DATA_CONVERSION_PROTO(charToDouble,char, DOUBLE)
-DATA_CONVERSION_PROTO(charToLong,char, LONG)
-DATA_CONVERSION_PROTO(longToDouble,long, DOUBLE)
-DATA_CONVERSION_PROTO(longToChar,long, CHAR)
-DATA_CONVERSION_PROTO(doubleToLong,double, LONG)                 
+DATA_CONVERSION_PROTO(charToDouble,char, DOUBLE) ///< Declaração da função gerada pela macro DATA_CONVERSION para converter de char para double
+DATA_CONVERSION_PROTO(charToLong,char, LONG) ///< Declaração da função gerada pela macro DATA_CONVERSION para converter de char para long
+DATA_CONVERSION_PROTO(longToDouble,long, DOUBLE) ///< Declaração da função gerada pela macro DATA_CONVERSION para converter de long para double
+DATA_CONVERSION_PROTO(longToChar,long, CHAR) ///< Declaração da função gerada pela macro DATA_CONVERSION para converter de long para char
+DATA_CONVERSION_PROTO(doubleToLong,double, LONG) ///< Declaração da função gerada pela macro DATA_CONVERSION para converter de double para long                 
 
 
+/**
+ * \brief Declaração da Macro para efetuar operações de acordo com disponíveis dos elementos na stack: double, long, char e string
+ * 
+ * @param _type tipo do elemento
+ * @param _name nome correspondente ao tipo: LONG, DOUBLE, CHAR, STRING
+ */
+#define STACK_OPERATION_PROTO(_type, _name)                                                 \
+    void push_##_name(Stack *s, _type val); /** Macro gera a função push para cada tipo */  \
+    _type pop_##_name(Stack *s); /** Macro gera a função push para cada tipo */             \
 
-#define STACK_OPERATION_PROTO(_type, _name)   \
-    void push_##_name(Stack *s, _type val);   \
-    _type pop_##_name(Stack *s);
-
-STACK_OPERATION_PROTO(long,LONG)
-STACK_OPERATION_PROTO(double,DOUBLE)
-STACK_OPERATION_PROTO(char,CHAR)
-STACK_OPERATION_PROTO(char *, STRING)
+STACK_OPERATION_PROTO(long,LONG) ///< Declaração da função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo long
+STACK_OPERATION_PROTO(double,DOUBLE) ///< Declaração da função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo double
+STACK_OPERATION_PROTO(char,CHAR) ///< Declaração da função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo char
+STACK_OPERATION_PROTO(char *, STRING) ///< Declaração da função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo string
 

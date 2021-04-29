@@ -181,7 +181,7 @@ void print_stack(Stack *s) {
         n.x._name = val; /** valor guardado na union dentro da struct no campo correspondente ao seu tipo */     \
         push(s,n);  /** efetua operação push para o elemento */                                                  \
     }                                                                                                            \
-    _type pop_##_name(Stack *s) { /** Macro gera a função pop para cada tipo */                                  \
+    _type pop_##_name(Stack *s) {/** Macro gera a função push para cada tipo */                                  \
         DATA n = pop(s); /** Struct DATA n guarda o valor retirado do topo da stack */                           \
         assert(n.type == _name); /** confirmar que o tipo corresponde corretamente */                            \
         return n.x._name; /** retorna o elemento */                                                              \
