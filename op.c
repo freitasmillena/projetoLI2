@@ -19,19 +19,12 @@
  * @param function Nome da função que será usada
  * @param op operação a efetuar
  */
-#define CASE_BIN(function, op)                                  \
-    void function(int x, Stack* s) {                            \
-        if (x == 1) {                                           \
-                                                                \
-                                                                \
-                int y = idtype(s);                              \
-                if (y == 1) {                                   \
-                    long X = pop_LONG(s);                       \
-                    long Y = pop_LONG(s);                       \
-                    push_LONG(s, op(Y,X));                      \
-                }                                               \
-        }                                                       \
-    }                                                           \
+#define CASE_BIN(function, op)        \
+    void function(Stack* s) {         \
+        long X = pop_LONG(s);         \
+        long Y = pop_LONG(s);         \
+        push_LONG(s, op(Y,X));        \
+    }                                 \
 
 CASE_BIN(and_operation,  AND)
 CASE_BIN(or_operation, OR)
@@ -160,41 +153,141 @@ void var_top (Stack* s, char c, DATA *v) {
  * @param op operação a efetuar
  */
 #define LOGIC_BIN(function, op)             \
-    void function(int x, Stack* s) {        \
-    if (x==2) {                             \
+    void function(Stack* s) {               \
+        double_conversion(s);               \
         double X = pop_DOUBLE(s);           \
-        int y = idtype(s);                  \
-        if (y == 2) {                       \
-            double Y = pop_DOUBLE(s);       \
-            if (op(X,Y)) push_LONG(s,1);    \
-            else push_LONG(s,0);            \
-        }                                   \
-        else  {                             \
-            long_conversion(s);             \
-            long Y = pop_LONG(s);           \
-            if (op(X,Y)) push_LONG(s,1);    \
-            else push_LONG(s,0);            \
-        }                                   \
-    }                                       \
-    else {                                  \
-        long_conversion(s);                 \
-        long X = pop_LONG(s);               \
-        int y = idtype(s);                  \
-        if (y == 2) {                       \
-            double Y = pop_DOUBLE(s);       \
-            if (op(X,Y)) push_LONG(s,1);    \
-            else push_LONG(s,0);            \
-        }                                   \
-        else  {                             \
-            long_conversion(s);             \
-            long Y = pop_LONG(s);           \
-            if (op(X,Y)) push_LONG(s,1);    \
-            else push_LONG(s,0);            \
-        }                                   \
-    }                                       \
+        double_conversion(s);               \
+        double Y = pop_DOUBLE(s);           \
+        if (op(X,Y)) push_LONG(s,1);        \
+        else push_LONG(s,0);                \
     }                                       \
 
-LOGIC_BIN(equal_elogic, EQUAL)
-LOGIC_BIN(greater_elogic, GREATER)
-LOGIC_BIN(less_elogic, LESS)
+LOGIC_BIN(equal_logic, EQUAL)
+LOGIC_BIN(greater_logic, GREATER)
+LOGIC_BIN(less_logic, LESS)
 
+/**
+ * \brief Função responsável pela operação lógica "!"
+ * @param s Apontador para a Stack
+ */
+void logic_not(Stack* s) {
+    double_conversion(s);
+    double X = pop_DOUBLE(s);
+    if (X == 0) push_LONG(s,1);
+    else push_LONG(s,0);
+}
+
+/**
+ * \brief Função responsável pela operação lógica "?"
+ * @param s Apontador para a Stack
+ */
+void if_then_else(Stack* s) {
+    DATA x,y,z;
+    x = pop(s);
+    y = pop(s);
+    z = pop(s);
+    if (z.x.LONG != 0) push(s,y);
+    else push(s,x);
+}
+
+/**
+ * \brief Macro responsável pelas operações lógicas e(Operação)
+ * @param function Nome final de cada função
+ * @param op Operação a ser utilizada
+ * @param v Inteiro para controlo do push. Caso seja 2 significa que é uma operação e< ou e> portanto o push é de elementos da stack. Caso seja 0 é um e&.
+ */
+#define LOGIC_BIN_E(function, op, v)                                               \
+    void function(Stack* s) {                                                      \
+        int x = idtype(s);                                                         \
+        double_conversion(s);                                                      \
+        double X = pop_DOUBLE(s);                                                  \
+        int y = idtype(s);                                                         \
+        double_conversion(s);                                                      \
+        double Y = pop_DOUBLE(s);                                                  \
+        if (op(X,Y)) {                                                             \
+            switch(x) {                                                            \
+                case (1): push_DOUBLE(s, X); long_conversion(s); break;            \
+                case (2): push_DOUBLE(s,X); break;                                 \
+                case (3): push_DOUBLE(s,X); char_conversion(s); break;             \
+            }                                                                      \
+        }                                                                          \
+        else {                                                                     \
+            if (v == 2) {                                                          \
+                switch(y) {                                                        \
+                    case (1): push_DOUBLE(s,Y); long_conversion(s); break;         \
+                    case (2): push_DOUBLE(s,Y); break;                             \
+                    case (3): push_DOUBLE(s,Y); char_conversion(s); break;         \
+                }                                                                  \
+            }                                                                      \
+            else push_LONG(s,v);                                                   \
+        }                                                                          \
+    }                                                                              \
+
+LOGIC_BIN_E(greater_elogic, EGREATER, 2)
+LOGIC_BIN_E(less_elogic, ELESS, 2)
+LOGIC_BIN_E(and_elogic, EIF, 0)
+
+
+/**
+ * \brief Função responsável pela operação de lógica quando há apenas e. Caso tenha 1 x e, faz push de 1, caso tenha 0 x e faz push de x.
+ * @param s Apontador para a Stack
+ */
+void logic_e_null(Stack* s) {
+    long X = pop_LONG(s);
+    long Y = pop_LONG(s);
+
+    if (Y == 0) push_LONG(s,X);
+    else push_LONG(s,Y);
+}
+
+/**
+ * \brief Função responsável pela operação de lógica e| : Se algum valor for diferente de 0, retorna o maior entre eles
+ * @param s Apontador para a Stack
+ */
+void eor_logic(Stack* s) {                                                          
+        int x = idtype(s);                                                         
+        double_conversion(s);                                                      
+        double X = pop_DOUBLE(s);                                                  
+        int y = idtype(s);                                                         
+        double_conversion(s);                                                      
+        double Y = pop_DOUBLE(s);                                                  
+                                                      
+        if (X != 0 || Y != 0) {   ///< apenas um precisa ser diferente de 0
+            if (X > Y) {          ///< caso X > Y, adiciona à stack o X                                
+                switch(x) {       ///< Verificar tipo de X para adicionar à stack corretamente                   
+                    case (1): push_DOUBLE(s,X); long_conversion(s); break;            
+                    case (2): push_DOUBLE(s,X); break;                                 
+                    case (3): push_DOUBLE(s,X); char_conversion(s); break;             
+                }                                                                      
+            }
+            else {  ///< caso X < Y, adiciona à stack o X 
+                switch(y) {    ///< Verificar tipo de Y para adicionar à stack corretamente                                                     
+                    case (1): push_DOUBLE(s,Y); long_conversion(s); break;            
+                    case (2): push_DOUBLE(s,Y); break;                                 
+                    case (3): push_DOUBLE(s,Y); char_conversion(s); break;             
+                }  
+            }       
+        }
+        else push_LONG(s,1);
+} 
+
+
+
+/**
+ * \brief Função responsável por detetar as operações lógicas e aplicar suas respetivas funções
+ * @param c Apontador para o array token
+ * @param s Apontador para a Stack
+ */
+void logic_e(char* c, Stack* s) {
+    char x = c[1];
+
+    switch(x) {
+        case '&': and_elogic(s); break; 
+        case '|': eor_logic(s); break; 
+        case '>': greater_elogic(s); break;
+        case '<': less_elogic(s); break;
+        default:  logic_e_null(s); break;
+    }
+}
+
+                                                                    

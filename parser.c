@@ -17,57 +17,6 @@
 #include "stack.h"
 #include "op.h"
 
-/*
-void logic_e(char* c, Stack* s) {
-    char x = c[1];
-
-    switch(x) {
-        case '&': LOGIC_BIN_E_IF(EIF); break; 
-        case '|': LOGIC_BIN_E_OR(EOR); break; 
-        case '>': LOGIC_BIN_E(EGREATER); break;
-        case '<': LOGIC_BIN_E(ELESS); break;
-    }
-}
-*/
-
-/*
-
-#define LOGIC_BIN_E(op)             \
-    {                               \
-    DATA X = pop(s);                \
-    DATA Y = pop(s);                \
-                                    \
-    long y = Y.x.LONG;              \
-    long x = X.x.LONG;              \
-                                    \
-    if (op(x,y)) push_LONG(s,x);    \
-    else push_LONG(s,y);            \
-    }                               \
-#define LOGIC_BIN_E_IF(op)          \
-    {                               \
-    DATA X = pop(s);                \
-    DATA Y = pop(s);                \
-                                    \
-    long y = Y.x.LONG;              \
-    long x = X.x.LONG;              \
-                                    \
-    if (op(x,y)) push_LONG(s,x);    \
-    else push_LONG(s,0);            \
-    }                               \
-#define LOGIC_BIN_E_OR(op)          \
-    {                               \
-    DATA X = pop(s);                \
-    DATA Y = pop(s);                \
-                                    \
-    long y = Y.x.LONG;              \
-    long x = X.x.LONG;              \
-                                    \
-    if (op(x,y)) push_LONG(s,x);    \
-    else push_LONG(s,1);            \
-    }                               \
-
-*/
-
 
 /**
 * A função parse começa por declarar os delimitadores e chama função @create_stack do ficheiro stack.h.
@@ -156,23 +105,23 @@ void parse(char *line, Stack* s) {
                     case '/': div_operation(x,s); break;
                     case '(': dec_operation(x,s);break;
                     case ')': inc_operation(x,s); break;
-                    case '%': mod_operation(x,s); break;
+                    case '%': mod_operation(s); break;
                     case '#': pow_operation(x,s); break;
-                    case '&': and_operation(x,s); break;
-                    case '|': or_operation(x,s); break;
-                    case '^': xor_operation(x,s); break;
+                    case '&': and_operation(s); break;
+                    case '|': or_operation(s); break;
+                    case '^': xor_operation(s); break;
                     case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;}
                     case '_': push(s,top(s)); break;
                     case ';': pop(s); break;
                     case '\\': SWAP(s); break;
                     case '@': ROTATE(s); break;
                     case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;}
-                    case '=': equal_elogic(x,s); break;
-                    case '>': greater_elogic(x,s); break;
-                    case '<': less_elogic(x,s); break;
-                    case '?': {long X = pop_LONG(s); long Y = pop_LONG(s); long Z = pop_LONG(s); if (Z != 0) push_LONG(s, Y); else push_LONG(s, X); break;}
-                    case '!': {long X = pop_LONG(s); if (X == 0) push_LONG(s, 1); else push_LONG(s, 0); break;}
-                    //case 'e': logic_e(token, s); break;
+                    case '=': equal_logic(s); break;
+                    case '>': greater_logic(s); break;
+                    case '<': less_logic(s); break;
+                    case '?': if_then_else(s); break;
+                    case '!': logic_not(s); break;
+                    case 'e': logic_e(token,s); break;
                 }
             }  
         }   

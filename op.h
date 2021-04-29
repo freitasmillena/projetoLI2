@@ -32,7 +32,7 @@
 #define EOR(x,y) y == 0
 
 #define CASE_BIN_PROTO(function, op)                               \
-    void function(int x, Stack* s);                                \
+    void function(Stack* s);                                       \
 
 CASE_BIN_PROTO(and_operation,  AND)
 CASE_BIN_PROTO(or_operation, OR)
@@ -58,10 +58,23 @@ void SWAP(Stack* s);
 void ROTATE(Stack* s);
 
 #define LOGIC_BIN_PROTO(function, op)       \
-    void function(int x, Stack* s);         \
+    void function(Stack* s);                \
 
-LOGIC_BIN_PROTO(equal_elogic, EQUAL)
-LOGIC_BIN_PROTO(greater_elogic, GREATER)
-LOGIC_BIN_PROTO(less_elogic, LESS)
+LOGIC_BIN_PROTO(equal_logic, EQUAL)
+LOGIC_BIN_PROTO(greater_logic, GREATER)
+LOGIC_BIN_PROTO(less_logic, LESS)
 
 void var_top (Stack* s, char c, DATA *v);
+void logic_not(Stack* s);
+void if_then_else(Stack* s);
+
+#define LOGIC_BIN_E_PROTO(function, op, v)\
+    void function(Stack* s);              \
+
+LOGIC_BIN_E_PROTO(greater_elogic, EGREATER, 2)
+LOGIC_BIN_E_PROTO(less_elogic, LESS, 2)
+LOGIC_BIN_E_PROTO(and_elogic, EIF, 0)
+
+void logic_e_null(Stack* s);
+void eor_logic(Stack* s);
+void logic_e(char* c, Stack* s);
