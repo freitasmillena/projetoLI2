@@ -18,7 +18,7 @@ void parse(char *line, Stack* s); ///< declaração da função parse
 /**
 * \brief Esta é a função principal do programa.
 *
-* @Returns O valor 0.
+* @returns O valor 0.
 */
 int main() {
     

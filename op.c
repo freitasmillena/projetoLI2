@@ -75,7 +75,6 @@ CASE_SOLO(inc_operation, ++)  ///< Incrementação
  *
  * @param function Nome da função que será usada
  * @param op operação a efetuar
- *
  */
 #define CASE_OP(function, op)                                   \
     void function(int x, Stack* s) {                            \
