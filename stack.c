@@ -1,8 +1,8 @@
 /**
  * @file stack.c 
  * 
- * Module : Guião1 + Guião 2 
- * Description : Stack -> (Guião1 e Guião2) - Trabalho de LI2 2020/2021
+ * Module : Guião1 + Guião 2 + Guião 3
+ * Description : Stack -> (Guião1 e Guião2 e Guião 3) - Trabalho de LI2 2020/2021
  * 
  * Neste ficheiro stack.c tem-se como objetivo a implementação da stack. Stack é uma estrutura de dados linear que segue uma ordem particular para a qual as operações são realizadas e caracteriza um empilhamento de dados. A ordem a ser utilizada é **Last In First Out**.
  * (Guião2) Atualizar o código para os diferentes tipos de dados.
@@ -15,21 +15,21 @@
 
 //Identificação de tipos
 /**
-* \brief Função que indica o tipo do dado que está no topo da stack.
+* \brief Função que indica o tipo do dado que está no topo da stack. 
 * @param s Apontador para a stack 
-* @returns r , Tipo do elemento
+* @returns r , Inteiro que corresponde ao tipo do elemento
 */
 int idtype(Stack* s) {
-    int r = 0;
-    DATA elem = s->elements[s->sp];
-    TYPE type = elem.type;
-    switch(type) {
-        case LONG: r = 1; break;
-        case DOUBLE: r = 2; break;
-        case CHAR: r = 3; break;
-        case STRING: r = 4; break;
+    int r = 0;  ///< r inicializado em 0
+    DATA elem = s->elements[s->sp]; ///< elemento no topo da stack guardado em DATA
+    TYPE type = elem.type; ///< tipo do elemento
+    switch(type) {  
+        case LONG: r = 1; break; ///< caso seja long, r = 1
+        case DOUBLE: r = 2; break; ///< caso seja double, r = 2
+        case CHAR: r = 3; break;   ///< caso seja char, r = 3
+        case STRING: r = 4; break; ///< caso seja string, r = 4
     }
-    return r;
+    return r; ///< retorna o inteiro correspondente ao tipo do elemento
 }
 
 
@@ -41,25 +41,22 @@ int idtype(Stack* s) {
  * @param input_type tipo do input
  * @param output_type tipo do output
  */
-#define DATA_CONVERSION(function,input_type,output_type)    \
-DATA function(input_type val)                               \
-{                                                           \
-  DATA v;                                                   \
-  v.type = output_type;                                     \
-  v.x.output_type = val;                                    \
-  return v;                                                 \
-}
+#define DATA_CONVERSION(function,input_type,output_type)                                             \
+DATA function(input_type val) /** Macro chama função para o input type */                            \
+{                                                                                                    \
+  DATA v;   /** Uma struct DATA v */                                                                 \
+  v.type = output_type; /** type é o tipo do output desejado */                                      \
+  v.x.output_type = val; /** guarda o valor em v.x.output_type*/                                     \
+  return v;  /** retorna o valor após a conversão */                                                 \
+}                                                                                                    \
 
-DATA_CONVERSION(charToDouble,char, DOUBLE)
-DATA_CONVERSION(charToLong,char, LONG)
-DATA_CONVERSION(longToDouble,long, DOUBLE)
-DATA_CONVERSION(longToChar,long, CHAR)
-DATA_CONVERSION(doubleToLong,double, LONG)
+DATA_CONVERSION(charToDouble,char, DOUBLE) ///< Função gerada pela macro DATA_CONVERSION para converter de char para double
+DATA_CONVERSION(charToLong,char, LONG) ///< Função gerada pela macro DATA_CONVERSION para converter de char para long
+DATA_CONVERSION(longToDouble,long, DOUBLE) ///< Função gerada pela macro DATA_CONVERSION para converter de long para double
+DATA_CONVERSION(longToChar,long, CHAR) ///< Função gerada pela macro DATA_CONVERSION para converter de long para char
+DATA_CONVERSION(doubleToLong,double, LONG) ///< Função gerada pela macro DATA_CONVERSION para converter de double para long
 
 
-int has_type(DATA n, int mask) {
-    return (n.type & mask) != 0;
-}
 
 /**
  * \brief Função que cria uma stack vazia
@@ -72,7 +69,7 @@ Stack* create_stack() {
     s->capacity = 100; ///< Capacidade inicial da stack
     s->elements = (DATA *)malloc(s->capacity * sizeof(DATA)); ///< Aloca espaço para o array que contém os elementos da stack de acordo com a capacity e preenche 0 aos elementos
     
-    return s;
+    return s; ///< retorna a stack criada
 } 
 /**
  * \brief Função que retorna o topo da stack
@@ -82,7 +79,7 @@ Stack* create_stack() {
  * @returns s->elements[s->sp] , Elemento no qual o stack pointer está a apontar
  */
 DATA top(Stack* s) {
-    return s->elements[s->sp];
+    return s->elements[s->sp]; ///< retorna o elemento do topo da stack, ou seja, aquele no qual o sp está a apontar
 }
 
 
@@ -95,7 +92,7 @@ DATA top(Stack* s) {
  */
 int empty_stack(Stack* s) {
     
-    return (s->sp == -1); 
+    return (s->sp == -1); ///< é empty se sp for igual ao seu valor inicializado que é -1
 }
 
 /**
@@ -107,7 +104,7 @@ int empty_stack(Stack* s) {
  */
 int full_stack(Stack* s) {
 
-    return (s->sp == s->capacity - 1); 
+    return (s->sp == s->capacity - 1); ///< a stack encontra-se cheia de o sp estiver a apontar para a capacidade - 1, pois o sp é inicializado igual a -1
 
 }
 
@@ -118,7 +115,7 @@ int full_stack(Stack* s) {
  */
 void push(Stack* s, DATA n) {
      
-    if (full_stack(s)) {
+    if (full_stack(s)) { ///< caso a stack esteja cheia
         
         s->capacity += 100; ///< Duplica a capacidade da stack
         s->elements = realloc(s->elements,s->capacity * sizeof(DATA)); ///< Realoca o espaço na memória do array que contém os elementos da stack para esta nova capacity
@@ -142,7 +139,7 @@ void push(Stack* s, DATA n) {
  */
 DATA pop(Stack* s) {
       
-    return s->elements[s->sp--];
+    return s->elements[s->sp--]; ///< retorna o elemento que estava no topo da stack e decrementa o sp
   
 }
 
@@ -153,18 +150,18 @@ DATA pop(Stack* s) {
  */
 void print_stack(Stack *s) {
     
-    for (int i = 0; i <= s->sp; i++) {
-        DATA n = s->elements[i];
-        TYPE type = n.type;
+    for (int i = 0; i <= s->sp; i++) {  ///< ciclo for até que i seja menor ou igual ao sp
+        DATA n = s->elements[i]; ///< guarda o elemento em DATA n
+        TYPE type = n.type; ///< tipo do elemento
         switch(type) {
-            case LONG:
-                printf("%ld", n.x.LONG); break;
-            case DOUBLE:
-                printf("%g", n.x.DOUBLE); break;
-            case CHAR:
-                printf("%c", n.x.CHAR); break;
-            case STRING:
-                printf("%s", n.x.STRING); break;
+            case LONG: ///< caso seja long
+                printf("%ld", n.x.LONG); break; ///< imprime ao usar %ld
+            case DOUBLE: ///< caso seja double
+                printf("%g", n.x.DOUBLE); break; ///< imprime ao usar %g
+            case CHAR: ///< caso seja char
+                printf("%c", n.x.CHAR); break; ///< imprime ao usar %c
+            case STRING: ///< caso seja string
+                printf("%s", n.x.STRING); break; ///< imprime ao usar %s
         }
     }
     
@@ -174,43 +171,45 @@ void print_stack(Stack *s) {
 /**
  * \brief Macro para efetuar operações de acordo com disponíveis dos elementos na stack: double, long, char e string
  * 
+ * @param _type tipo do elemento
+ * @param _name nome correspondente ao tipo: LONG, DOUBLE, CHAR, STRING
  */
-#define STACK_OPERATION(_type, _name)         \
-    void push_##_name(Stack *s, _type val) {  \
-        DATA n;                               \
-        n.type = _name;                       \
-        n.x._name = val;                      \
-        push(s,n);                            \
-    }                                         \
-    _type pop_##_name(Stack *s) {             \
-        DATA n = pop(s);                      \
-        assert(n.type == _name);              \
-        return n.x._name;                     \
-    }                                         \
+#define STACK_OPERATION(_type, _name)                                                                            \
+    void push_##_name(Stack *s, _type val) {    /** Macro gera a função push para cada tipo */                   \
+        DATA n; /** Struct DATA n */                                                                             \
+        n.type = _name;  /** tipo = _name recebido (LONG,DOUBLE, CHAR, STRING) */                                \
+        n.x._name = val; /** valor guardado na union dentro da struct no campo correspondente ao seu tipo */     \
+        push(s,n);  /** efetua operação push para o elemento */                                                  \
+    }                                                                                                            \
+    _type pop_##_name(Stack *s) { /** Macro gera a função pop para cada tipo */                                  \
+        DATA n = pop(s); /** Struct DATA n guarda o valor retirado do topo da stack */                           \
+        assert(n.type == _name); /** confirmar que o tipo corresponde corretamente */                            \
+        return n.x._name; /** retorna o elemento */                                                              \
+    }                                                                                                            \
 
-STACK_OPERATION(long, LONG)
-STACK_OPERATION(double, DOUBLE)
-STACK_OPERATION(char, CHAR)
-STACK_OPERATION(char *, STRING)
+STACK_OPERATION(long, LONG) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo long
+STACK_OPERATION(double, DOUBLE) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo double
+STACK_OPERATION(char, CHAR) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo char
+STACK_OPERATION(char *, STRING) ///< Função gerada pela macro STACK_OPERATION para efetuar push e pop de elemento com tipo string
 
 /**
  * \brief Função para conversão de um elemento para o tipo char
  * @param s Apontador para a stack
  */
 void char_conversion (Stack* s) {
-    int x = idtype(s);
+    int x = idtype(s); ///< x guarda o inteiro correspondente ao tipo do elemento do topo da stack
     switch (x) {
-        case (1): {
-            long y = pop_LONG(s); 
-            push(s, longToChar(y)); 
+        case (1): { ///< caso seja long
+            long y = pop_LONG(s); ///< efetua operação pop e guarda em long y
+            push(s, longToChar(y)); ///< efetua operação push do char após a conversão de long para char
             break;
         }
-        case (2): {
-            long y  = (long) pop_DOUBLE(s);
-            push(s, longToChar(y));
+        case (2): { ///< caso seja double
+            long y  = (long) pop_DOUBLE(s); ///< efetua operação pop e guarda em long y, neste caso temos que guardar de double pra long para depois converter para char
+            push(s, longToChar(y)); ///< efetua operação push do char após a conversão de long para char
             break;
         }
-        case (3): ; break;
+        case (3): ; break; ///< caso seja char, não efetua operação
 
     }
 }
@@ -220,23 +219,23 @@ void char_conversion (Stack* s) {
  * @param s Apontador para a stack
  */
 void long_conversion (Stack* s) {
-    int x = idtype(s);
+    int x = idtype(s); ///< x guarda o inteiro correspondente ao tipo do elemento do topo da stack
     switch (x) {
-        case (1): ; break;
-        case (2): {
-            double y = pop_DOUBLE(s); 
-            push(s, doubleToLong(y)); 
+        case (1): ; break; ///< caso seja long, não efetua operação
+        case (2): { ///< caso seja double
+            double y = pop_DOUBLE(s); ///< efetua operação pop e guarda em double y
+            push(s, doubleToLong(y)); ///< efetua operação push do double após a conversão de long para double
             break;
         }
-        case (3): {
-            char c = pop_CHAR(s); 
-            push(s,charToLong(c)); 
+        case (3): { ///< caso seja char
+            char c = pop_CHAR(s); ///< efetua operação pop e guarda em char c
+            push(s,charToLong(c)); ///< efetua operação push do char após a conversão de long para char
             break;
         }
-        case (4): {
-            char *ptr; 
-            long r = strtol(pop_STRING(s),&ptr, 10); 
-            push_LONG(s,r); 
+        case (4): { ///< caso seja string 
+            char *ptr; ///< apontador ptr para string
+            long r = strtol(pop_STRING(s),&ptr, 10); ///< converte string para long
+            push_LONG(s,r); ///< efetua operação push do long após a conversão
             break;
         }
 
@@ -248,23 +247,23 @@ void long_conversion (Stack* s) {
  * @param s Apontador para a stack
  */
 void double_conversion(Stack* s) {
-    int x = idtype(s);
+    int x = idtype(s); ///< x guarda o inteiro correspondente ao tipo do elemento do topo da stack
     switch (x) {
-        case (1): {
-            long y = pop_LONG(s); 
-            push(s,longToDouble(y)); 
+        case (1): { ///< caso seja long 
+            long y = pop_LONG(s); ///< efetua operação pop e guarda em long y
+            push(s,longToDouble(y)); ///< efetua operação push do double após a conversão de long para double
             break;
         }
-        case (2): ; break;
-        case (3): {
-            char c = pop_CHAR(s); 
-            push(s,charToDouble(c)); 
+        case (2): ; break; ///< caso seja double, não efetua operação
+        case (3): { ///< caso seja char 
+            char c = pop_CHAR(s); ///< efetua operação pop e guarda em char c
+            push(s,charToDouble(c)); ///< efetua operação push do double após a conversão de char para double
             break;
         }
-        case (4): {
-            char *ptr; 
-            double r = strtod(pop_STRING(s),&ptr); 
-            push_DOUBLE(s,r); 
+        case (4): { ///< caso seja string 
+            char *ptr; ///< apontador ptr para string
+            double r = strtod(pop_STRING(s),&ptr); ///< converte string para double
+            push_DOUBLE(s,r); ///< efetua operação push do double após a conversão
             break;
         }
 
@@ -276,25 +275,25 @@ void double_conversion(Stack* s) {
  * @param s Apontador para a stack
  */
 void string_conversion(Stack* s) {
-    int x = idtype(s);
-    char str[40];
+    int x = idtype(s); ///< x guarda o inteiro correspondente ao tipo do elemento do topo da stack
+    char str[40]; ///< array de char str
     switch (x) {
-        case (1): {
-            sprintf(str, "%ld", pop_LONG(s)); 
-            push_STRING(s,str);
+        case (1): { ///< caso seja long 
+            sprintf(str, "%ld", pop_LONG(s)); ///< converte de long para string
+            push_STRING(s,str); ///< efetua operação push da string
             break;
         }
-        case (2): {
-            sprintf(str, "%g", pop_DOUBLE(s)); 
-            push_STRING(s,str); 
+        case (2): { ///< caso seja double 
+            sprintf(str, "%g", pop_DOUBLE(s)); ///< converte de double para string
+            push_STRING(s,str); ///< efetua operação push da string
             break;
         }
-        case (3): {
-            sprintf(str, "%c", pop_CHAR(s)); 
-            push_STRING(s,str); 
+        case (3): { ///< caso seja char 
+            sprintf(str, "%c", pop_CHAR(s)); ///< converte de char para string
+            push_STRING(s,str); ///< efetua operação push da string
             break;
         }
-        case (4): ;break;
+        case (4): ;break; ///< caso seja string, não efetua operação 
     }
 }
 
