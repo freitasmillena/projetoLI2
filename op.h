@@ -213,3 +213,10 @@ LOGIC_BIN_E_PROTO(and_elogic, EIF, 0)
 void logic_e_null(Stack* s);
 void eor_logic(Stack* s);
 void logic_e(char* c, Stack* s);
+
+void handle_conversion(char *token, Stack* s);
+void handle_math(char *token, int x, Stack* s);
+void handle_binary(char *token,Stack* s);
+void handle_logic(char *token, Stack* s);
+void handle_stack(char *token, Stack* s);
+void handle_variable(char *token, Stack* s, DATA *p);

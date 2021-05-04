@@ -13,7 +13,8 @@
 #include "stack.h"
 
 
-void parse(char *line, Stack* s); ///< declaração da função parse
+void parser(char *line, Stack* s); 
+Stack *eval(char *line, Stack* init_stack); 
 
 /**
 * \brief Esta é a função principal do programa.
@@ -29,7 +30,7 @@ int main() {
     assert(fgets(line, 10240, stdin) != NULL); ///< confirmar que o input não é null
     assert(line[strlen(line) - 1] == '\n'); ///< confirmar que o último elemento é '\n' ou seja o enter
 
-    parse(line,s); ///< chama função parse
+    parser(line,s); ///< chama função parse
 
     print_stack(s); ///< imprime stack
 

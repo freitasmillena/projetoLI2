@@ -1,8 +1,8 @@
 /**
 * @file parser.h
 *
-* Module : Guião1 + Guião2 (1a semana e 2a semana)
-* Description : Parser -> (Guião1) - Trabalho de LI2 2020/2021
+* Module : Guião1 + Guião2 + Guião 3
+* Description : Parser -> Trabalho de LI2 2020/2021
 *
 * No primeiro guião, temos como objetivo criar um programa que fosse capaz de ler
 * um input (ex.: " 17 11 - ( 18 9 / ") e devolver um output (ex.: 52).
@@ -19,22 +19,90 @@
 
 
 /**
-* A função parse começa por declarar os delimitadores e chama função @create_stack do ficheiro stack.h.
-* Testamos se é um número inteiro ou real e depois fazemos o push ( função no ficheiro stack.h ) caso seja inteiro.
-* Usamos o switch (também puderia ser feito com ifs mas achamos mais 'elegante' o código apresentado desta maneira), 
-* para que dependendo do token que é lido, será feita a função que lhe está associada,
-*
-*  |  + - * /         Somar, subtrair, multiplicar e dividir
-*  |  ( )             Decrementar e incrementar um valor
-*  |  %               Módulo
-*  |  #               Exponenciação
-*  |  & | ^ ~         E, ou, xor e not (bitwise) para inteiros 
-*
-* imprimindo no final o resultado.
-*/
+ * \brief A função index_finish devolve o índice do elemento logo a seguir do fim do array ou da string
+ * 
+ * @param line Recebe a linha por referência
+ * @return retorna o índice
+ */
+int index_finish(char* line) {
+    char *result;
+    result = line;
+    int count = 0;
+    int r = 0;
+    //Para Arrays
+    if(*line == '[') {
+        //percorrer linha e count++ para cada [ e count-- para cada ]. Ao chegar em count = 0, este é o array.
+        count++;
+        result++;
 
-void parse(char *line, Stack* s) {
+        while(count != 0) {
+                    if(*result == '[') {count++; result++;}
+                    else if (*result == ']') {count--; result++;}
+                    else {result++; }
+        }
+        r = result - line; ///< result guarda o endereço do elemento após o fim do array e line guarda o endereço do primeiro elemento da linha. Ao diminuir, obtemos o índice do elemento após o fim do array
+    }
+    //Para Strings
+    else if(*result == '"') {
+       result++;
+
+       while(*result != '"') {
+           result++;
+
+       }
+       r = result - line + 1; ///< result guarda o endereço do último " da string e line guarda o endereço do primeiro elemento da linha. Ao diminuir e somar 1, obtemos o índice do elemento após o fim do string
+
+    }
+
+    return r;
+}
+
+/**
+ * \brief A função get_token é responsável por separar o token a ser utilizado e também guardar o resto da linha que será utilizado posteriormente.
+ * 
+ * @param line Recebe a linha por referência
+ * @param rest Onde será guardado o resto da linha após o token 
+ * @return retorna o token
+ */
+char *get_token(char *line, char **rest) {
+
     char *delims = " \t\n";
+    char *token = (char *)malloc(sizeof(char)*strlen(line));
+    char *t;
+    t = token;
+    int i;
+
+    if (*line == '\0') return NULL;
+
+    else if (*line == '[' || *line == '"') {
+        i = index_finish(line);
+
+        strncpy(token, line, sizeof(char)*i);
+        strncpy(*rest, line + i+1, sizeof(char) * (strlen(line) - i + 1));
+
+        *(t+i) = '\0';
+    }
+
+    else token = strtok_r(line, delims, rest);
+
+    return token;
+
+}
+
+/**
+ * \brief A função eval é responsável por tratar da linha ao chamar outra função get_token para a separação dos tokens e, assim, efetuar as operações matemáticas, lógicas, de conversão, entre outras.
+ * Caso a stack recebida seja nula, cria uma.
+ * 
+ * @param line Recebe a linha por referência
+ * @param init_stack Apontador para a stack
+ * @return retorna a stack após as operações 
+ */
+Stack *eval(char *line, Stack* init_stack) {
+    
+    if(init_stack == NULL) {
+        init_stack = malloc(sizeof(Stack));
+        init_stack = create_stack();
+    }
     
     
     DATA abc[26] = { /** //Array no qual cada elemento é uma struct. Possui todas as variáveis e as que possuem valor por omissão já encontram-se inicializadas */
@@ -67,63 +135,45 @@ void parse(char *line, Stack* s) {
             };
     DATA *p = abc; ///< apontador para array de DATA abc 
 
-    for(char *token = strtok(line,delims); token != NULL; token = strtok(NULL,delims)) {
+    char *rest = (char *)malloc(sizeof(char)*strlen(line));
+    char *token;
+    
+
+    for(token = get_token(line,&rest); token != NULL ; token = get_token(rest, &rest)) {
+        
         char *sobra;
         char *sobrad;
-        
-        
         long vi = strtol(token, &sobra, 10);
         double vd = strtod(token, &sobrad);
-        long t = token[0];
 
-        if(strlen(sobra) == 0) push_LONG(s, vi); ///< caso seja long
+        if(strlen(sobra) == 0) push_LONG(init_stack, vi); ///< caso seja long
+
+        else if(strlen(sobrad) == 0) push_DOUBLE(init_stack,vd); ///< caso seja double
         
-        else if(strlen(sobrad) == 0) push_DOUBLE(s,vd); ///< caso seja double
-        
-        else if(token[0] == ':') var_top(s, token[1], p); ///< caso seja comando :<Letra>               
-        
-        else if (t>=65 && t<=90) push(s, abc[t-65]); ///< caso seja a variável <Letra>
-                
         else {
-                int x = idtype(s); ///< verifica o tipo do elemento no topo da stack
-                               
-                switch (*token) {
+        int x = idtype(init_stack);
+        
+        handle_math(token, x, init_stack);
+        handle_binary(token, init_stack);
+        handle_conversion(token, init_stack);
+        handle_logic(token,init_stack);
+        handle_stack(token, init_stack);
+        handle_variable(token, init_stack, p);
+        }
 
-                    case 'l': {  ///< comando para ler linha
-                        char l[10240]; ///< char l
-                        assert(fgets(l, 10240, stdin) != NULL); ///< confirmar que não é null
-                        push_STRING(s,l); ///< efetua operação de push para a string recebida
-                        break;
-                    }
-                    case 'c': char_conversion(s); break; ///< comando para converter para char
-                    case 'f': double_conversion(s); break; ///< comando para converter para double
-                    case 'i': long_conversion(s); break; ///< comando para converter para long
-                    case 's': string_conversion(s); break; ///< comando para converter para string
-                    case '+': add_operation(x,s); break; ///< comando para operação de soma 
-                    case '-': sub_operation(x,s); break; ///< comando para operação de subtração
-                    case '*': mult_operation(x,s); break; ///< comando para operação de multiplicação
-                    case '/': div_operation(x,s); break; ///< comando para operação de divisão
-                    case '(': dec_operation(x,s);break; ///< comando para operação de decrementação
-                    case ')': inc_operation(x,s); break; ///< comando para operação de incrementação
-                    case '%': mod_operation(s); break; ///< comando para operação de resto da divisão ou módulo
-                    case '#': pow_operation(x,s); break; ///< comando para operação de potência
-                    case '&': and_operation(s); break; ///< comando para operação binária & (and)
-                    case '|': or_operation(s); break; ///< comando para operação binária | (or)
-                    case '^': xor_operation(s); break; ///< comando para operação binária ^ (xor)
-                    case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;} ///< comando para operação binária ~ (not)
-                    case '_': push(s,top(s)); break; ///< comando para operação na stack (Duplicar)
-                    case ';': pop(s); break; ///< comando para operação na stack (pop)
-                    case '\\': SWAP(s); break; ///< comando para operação na stack (Trocar os dois elementos no topo da stack)
-                    case '@': ROTATE(s); break; ///< comando para operação na stack (Rodar os três elementos no topo da stack)
-                    case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;} ///< comando para operação na stack (Copiar n-ésimo elemento para o topo da stack)
-                    case '=': equal_logic(s); break; ///< comando para operação lógica = (Igual) 
-                    case '>': greater_logic(s); break; ///< comando para operação lógica > (Maior) 
-                    case '<': less_logic(s); break; ///< comando para operação lógica < (Menor)
-                    case '?': if_then_else(s); break; ///< comando para operação lógica ? (if then else)
-                    case '!': logic_not(s); break; ///< comando para operação lógica ! (Não)
-                    case 'e': logic_e(token,s); break; ///< comando para operação lógica e<Operação> 
-                }
-            }  
-        }   
+    }
+    
+    return init_stack;
 }
 
+/**
+ * \brief A função parse é responsável por chamar a função eval e passar um apontador para a stack caso não estejamos a trabalhar com arrays e strings.
+ * Caso estejamos a trabalhar com arrays e strings, passa NULL para que seja criada uma nova estrutura para lidar com estes tipos.
+ * @param line A linha inserida é passada por referência
+ * @param s Apontador para a stack
+ * 
+ */
+void parser(char *line, Stack* s) {
+    if (*line == '[' || *line == '"') eval(line, NULL);
+    else eval(line,s);
+}

@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include "stack.h"
 #include "op.h"
+#include <string.h>
+#include <assert.h>
 
 /**
 * Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o seu tipo de dados.
@@ -305,5 +307,113 @@ void logic_e(char* c, Stack* s) {
         default:  logic_e_null(s); break;
     }
 }
+
+/**
+ * \brief Função responsável por lidar com operações de conversão
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ */                                                                    
+void handle_conversion(char *token, Stack* s) {
+    
+    switch(*token) {
+        case 'l': {
+            char l[10240]; ///< char l
+            assert(fgets(l, 10240, stdin) != NULL); ///< confirmar que não é null
+            push_STRING(s,l); ///< efetua operação de push para a string recebida
+            break;
+        }
+        case 'c': char_conversion(s); break; ///< comando para converter para char
+        case 'f': double_conversion(s); break; ///< comando para converter para double
+        case 'i': long_conversion(s); break; ///< comando para converter para long
+        case 's': string_conversion(s); break; ///< comando para converter para string
+    }
+    
+}
+
+/**
+ * \brief Função responsável por lidar com operações matemáticas: +, -, *, /, (, ), % e #
+ * @param token Apontador para o array token
+ * @param x indica o tipo do elemento (long, double, char, string)
+ * @param s Apontador para a Stack
+ */    
+void handle_math(char *token, int x, Stack* s) {
+    
+    switch(*token) {
+        case '+': add_operation(x,s); break; ///< comando para operação de soma 
+        case '-': sub_operation(x,s); break; ///< comando para operação de subtração
+        case '*': mult_operation(x,s); break; ///< comando para operação de multiplicação
+        case '/': div_operation(x,s); break; ///< comando para operação de divisão
+        case '(': dec_operation(x,s);break; ///< comando para operação de decrementação
+        case ')': inc_operation(x,s); break; ///< comando para operação de incrementação
+        case '%': mod_operation(s); break; ///< comando para operação de resto da divisão ou módulo
+        case '#': pow_operation(x,s); break; ///< comando para operação de potência
+    }
+}
+
+/**
+ * \brief Função responsável por lidar com operações binárias: &, |, ^ e ~.
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ */    
+void handle_binary(char *token,Stack* s) {
+
+    switch (*token)
+    {
+        case '&': and_operation(s); break; ///< comando para operação binária & (and)
+        case '|': or_operation(s); break; ///< comando para operação binária | (or)
+        case '^': xor_operation(s); break; ///< comando para operação binária ^ (xor)
+        case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;} ///< comando para operação binária ~ (not)
+    }
+}
+
+/**
+ * \brief Função responsável por lidar com operações de lógica: =, <, >, ?, !, e.
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ */    
+void handle_logic(char *token, Stack* s) {
+
+    switch (*token)
+    {
+        case '=': equal_logic(s); break; ///< comando para operação lógica = (Igual) 
+        case '>': greater_logic(s); break; ///< comando para operação lógica > (Maior) 
+        case '<': less_logic(s); break; ///< comando para operação lógica < (Menor)
+        case '?': if_then_else(s); break; ///< comando para operação lógica ? (if then else)
+        case '!': logic_not(s); break; ///< comando para operação lógica ! (Não)
+        case 'e': logic_e(token,s); break; ///< comando para operação lógica e<Operação>
+    }
+}
+
+/**
+ * \brief Função responsável por lidar com operações de manipulação da stack
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ */    
+void handle_stack(char *token, Stack* s) {
+
+    switch (*token)
+    {
+        case '_': push(s,top(s)); break; 
+        case ';': pop(s); break; ///< comando para operação na stack (pop)
+        case '\\': SWAP(s); break; ///< comando para operação na stack (Trocar os dois elementos no topo da stack)
+        case '@': ROTATE(s); break; ///< comando para operação na stack (Rodar os três elementos no topo da stack)
+        case '$': {long offset = pop_LONG(s); push(s, s->elements[s->sp - offset]); break;} ///< comando para operação na stack (Copiar n-ésimo elemento para o topo da stack)
+    }
+}
+
+/**
+ * \brief Função responsável por lidar com operações com variáveis: Letra, :<Letra>
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ * @param p array DATA por referência. Este array possui todas as letras com seus respetivos valores por omissão
+ */    
+void handle_variable(char *token, Stack* s, DATA *p) {
+    long t = token[0];
+
+    if(token[0] == ':') var_top(s, token[1], p); ///< caso seja comando :<Letra>               
+       
+    else if (t>=65 && t<=90) push(s, *(p+t-65)); ///< caso seja a variável <Letra>
+}
+
 
                                                                     
