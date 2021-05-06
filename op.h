@@ -214,9 +214,12 @@ void logic_e_null(Stack* s);
 void eor_logic(Stack* s);
 void logic_e(char* c, Stack* s);
 
+int handle_push(char *token, Stack* s);
 void handle_conversion(char *token, Stack* s);
 void handle_math(char *token, int x, Stack* s);
 void handle_binary(char *token,Stack* s);
 void handle_logic(char *token, Stack* s);
 void handle_stack(char *token, Stack* s);
 void handle_variable(char *token, Stack* s, DATA *p);
+void handle_string(char *token, Stack* s, char **rest);
+void string_op(char *token, Stack* s, char *seps);

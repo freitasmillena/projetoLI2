@@ -415,5 +415,128 @@ void handle_variable(char *token, Stack* s, DATA *p) {
     else if (t>=65 && t<=90) push(s, *(p+t-65)); ///< caso seja a variável <Letra>
 }
 
+/**
+ * \brief Função responsável por lidar com push de longs e doubles
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ * @return Se r = 1, fez o push de long ou double, caso contrário não fez.
+ */
+int handle_push(char *token, Stack* s) {
+    int r;
+    char *sobra;
+    char *sobrad;
+    long vi = strtol(token, &sobra, 10);
+    double vd = strtod(token, &sobrad);
 
-                                                                    
+    if(strlen(sobra) == 0) {push_LONG(s, vi); r = 1;}  
+    else if(strlen(sobrad) == 0) {push_DOUBLE(s,vd); r = 1;}
+    else r = 0;
+
+    return r;
+}
+
+
+/**
+ * \brief Função responsável por devolver interior de strings (futuramente também de arrays)
+ * @param token Apontador para o array token
+ * @param seps Separador, no caso de strings " e no caso de arrays [
+ * @return result onde será guardado sem os separadores
+ */
+char *get_delimited(char *token, char *seps) {
+    char *result = (char *)malloc(sizeof(char)*strlen(token));
+
+    if(*seps == '"') strncpy(result, token +1, sizeof(char)*(strlen(token)-2));
+    
+    return result;
+}
+
+
+char *get_token(char *line, char **rest); 
+
+/**
+ * \brief Função responsável por concatenar string n vezes
+ * @param source String a ser concatenada
+ * @param n Quantidade de vezes a concatenar 
+ * @return result Onde será guardado a string após a operação
+ */
+char *concat_n_times(char *source, int n) {
+    size_t length;
+    char *result;
+    int index;
+    length = strlen(source);
+    result = malloc(length * n + 1);
+    if (!result) return NULL;
+    for(index = 0; index < n; index++) {
+        memcpy(result + index * length, source, length);
+    }
+    result[length * n] = '\0';
+    return result;
+
+}
+
+/**
+ * \brief Função responsável por devolver o índice no qual a substring ocorre na string 
+ * @param string String principal
+ * @param sub Substring
+ * @return índice
+ */
+int index_sub(char *string, char *sub) {
+    char *result = (char *)malloc(sizeof(char)*strlen(string));
+    result = strstr(string,sub);
+    return (result - string);
+}
+
+/**
+ * \brief Função responsável por lidar com parser de strings
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ * @param rest Onde será guardado o resto da linha após o token 
+ */
+void handle_string(char *line, Stack* s, char **rest) {
+    char *token;
+    char seps[] = {'"', '\0'};
+    for(token = get_token(line,rest); token != NULL ; token = get_token(*rest, rest)) {
+       int r = handle_push(token,s); 
+       if (r) continue; 
+       string_op(token,s, seps);
+
+
+    }
+} 
+
+/**
+ * \brief Função responsável por lidar com operações com strings
+ * @param token Apontador para o array token
+ * @param s Apontador para a Stack
+ * 
+ */
+void string_op(char *token, Stack* s, char *seps) {
+    switch (*token)
+    {
+    case '+': {
+        char *X = pop_STRING(s);
+        char *Y = pop_STRING(s);
+        push_STRING(s, strcat(Y,X));
+        break;
+    }
+    case '*': {
+        long X = pop_LONG(s);
+        char *Y = pop_STRING(s);
+        push_STRING(s, concat_n_times(Y, X));
+        break;
+
+    }
+    case '#': {
+        char *X = pop_STRING(s);
+        char *Y = pop_STRING(s);
+        push_LONG(s, index_sub(Y, X));
+        break;
+
+    }
+    default: push_STRING(s, get_delimited(token,seps)); break;
+        
+    
+    }
+}                                                                 
+
+

@@ -77,7 +77,7 @@ char *get_token(char *line, char **rest) {
     else if (*line == '[' || *line == '"') {
         i = index_finish(line);
 
-        strncpy(token, line, sizeof(char)*i);
+        strncpy(token, line, sizeof(char)*(i));
         strncpy(*rest, line + i+1, sizeof(char) * (strlen(line) - i + 1));
 
         *(t+i) = '\0';
@@ -138,29 +138,24 @@ Stack *eval(char *line, Stack* init_stack) {
     char *rest = (char *)malloc(sizeof(char)*strlen(line));
     char *token;
     
+    if(*line == '"') handle_string(line, init_stack, &rest);
+    else {
+        for(token = get_token(line,&rest); token != NULL ; token = get_token(rest, &rest)) {
 
-    for(token = get_token(line,&rest); token != NULL ; token = get_token(rest, &rest)) {
-        
-        char *sobra;
-        char *sobrad;
-        long vi = strtol(token, &sobra, 10);
-        double vd = strtod(token, &sobrad);
+            int r = handle_push(token,init_stack); 
+            if (r) ;
+            
+            else {
+            int x = idtype(init_stack);
 
-        if(strlen(sobra) == 0) push_LONG(init_stack, vi); ///< caso seja long
-
-        else if(strlen(sobrad) == 0) push_DOUBLE(init_stack,vd); ///< caso seja double
-        
-        else {
-        int x = idtype(init_stack);
-        
-        handle_math(token, x, init_stack);
-        handle_binary(token, init_stack);
-        handle_conversion(token, init_stack);
-        handle_logic(token,init_stack);
-        handle_stack(token, init_stack);
-        handle_variable(token, init_stack, p);
+            handle_math(token, x, init_stack);
+            handle_binary(token, init_stack);
+            handle_conversion(token, init_stack);
+            handle_logic(token,init_stack);
+            handle_stack(token, init_stack);
+            handle_variable(token, init_stack, p);
+            }
         }
-
     }
     
     return init_stack;
@@ -174,6 +169,6 @@ Stack *eval(char *line, Stack* init_stack) {
  * 
  */
 void parser(char *line, Stack* s) {
-    if (*line == '[' || *line == '"') eval(line, NULL);
+    if (*line == '[') eval(line, NULL);
     else eval(line,s);
 }
