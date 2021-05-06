@@ -223,3 +223,4 @@ void handle_stack(char *token, Stack* s);
 void handle_variable(char *token, Stack* s, DATA *p);
 void handle_string(char *token, Stack* s, char **rest);
 void string_op(char *token, Stack* s, char *seps);
+void size_range(Stack *s);

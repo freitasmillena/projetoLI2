@@ -363,6 +363,7 @@ void handle_binary(char *token,Stack* s) {
         case '|': or_operation(s); break; ///< comando para operação binária | (or)
         case '^': xor_operation(s); break; ///< comando para operação binária ^ (xor)
         case '~': {long X = pop_LONG(s); push_LONG(s, ~X); break;} ///< comando para operação binária ~ (not)
+        case ',': size_range(s); break;
     }
 }
 
@@ -487,6 +488,49 @@ int index_sub(char *string, char *sub) {
 }
 
 /**
+ * \brief Função responsável por lidar com o operador , para strings
+ * @param s Apontador para a Stack
+ */
+void size_range(Stack *s) {
+    int x = idtype(s);
+    if (x == 1) {
+        long X = pop_LONG(s);
+        char range[100];
+        
+        for(int i = 0; i < X ; ++i) {
+            range[i] = i + '0'; 
+        }
+    
+        push_STRING(s, range);
+    }
+    else {
+        char *X = pop_STRING(s);
+        push_LONG(s, strlen(X));
+    }
+}
+
+/**
+ * \brief Função responsável por lidar com o operador = para strings
+ * @param s Apontador para a Stack
+ */
+void equal(Stack* s) {
+    int x = idtype(s);
+    if(x == 1) {
+        long Y = pop_LONG(s);
+        char *X = pop_STRING(s);
+        
+        push_CHAR(s, X[Y]);
+
+    }
+    else {
+        char *X = pop_STRING(s);
+        char *Y = pop_STRING(s);
+        if(strcmp(X,Y) == 0) push_LONG(s,1);
+        else push_LONG(s,0);
+    }
+}
+
+/**
  * \brief Função responsável por lidar com parser de strings
  * @param token Apontador para o array token
  * @param s Apontador para a Stack
@@ -533,6 +577,9 @@ void string_op(char *token, Stack* s, char *seps) {
         break;
 
     }
+    case '=': equal(s); break;
+    case ',': size_range(s); break;
+
     default: push_STRING(s, get_delimited(token,seps)); break;
         
     
