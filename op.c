@@ -530,6 +530,120 @@ void equal(Stack* s) {
     }
 }
 
+
+/**
+ * \brief Função responsável por lidar com o operador < para strings
+ * @param s Apontador para a Stack
+ */
+void X_inicio(Stack* s) {
+    int x = idtype(s);
+    if(x == 4) {
+        char *X = pop_STRING(s);
+        char *Y = pop_STRING(s);
+        if(strcmp(Y,X) < 0) push_LONG(s,1);
+        else push_LONG(s,0);
+    }
+    else {
+        long X = pop_LONG(s);
+        char *string = pop_STRING(s);
+        char *result = (char *)malloc(sizeof(char)*strlen(string));
+
+        result = strndup(string,sizeof(char)*X);
+
+        push_STRING(s, result);
+    }
+
+}
+
+/**
+ * \brief Função responsável por lidar com o operador > para strings
+ * @param s Apontador para a Stack
+ */
+void X_fim(Stack* s) {
+    int x = idtype(s);
+    if(x == 4) {
+        char *X = pop_STRING(s);
+        char *Y = pop_STRING(s);
+        if(strcmp(Y,X) > 0) push_LONG(s,1);
+        else push_LONG(s,0);
+    }
+    else {
+        long X = pop_LONG(s);
+        char *string = pop_STRING(s);
+        int length = strlen(string);
+        char *result = (char *)malloc(sizeof(char)*length);
+        
+        int start = length - X;
+        result = strndup(string + start, X);
+
+       
+        push_STRING(s, result);
+    }
+
+}
+
+/**
+ * \brief Função responsável por lidar com o operador ( para strings
+ * @param s Apontador para a Stack
+ */
+void remove_first(Stack* s) {
+    char *X = pop_STRING(s);
+    char *Y = strndup(X, 1);;
+    char *result = (char *)malloc(sizeof(char)*strlen(X));
+    result = strdup(X+1);
+    push_STRING(s,result);
+    push_STRING(s,Y);
+}
+
+/**
+ * \brief Função responsável por lidar com o operador ) para strings
+ * @param s Apontador para a Stack
+ */
+void remove_last(Stack* s) {
+    char *X = pop_STRING(s);
+    int length = strlen(X);
+    int last = length - 1;
+    char *Y = strndup(X+last, 1);
+    char *result = (char *)malloc(sizeof(char)*strlen(X));
+    result = strndup(X, last);
+    push_STRING(s,result);
+    push_STRING(s,Y);
+}
+
+/**
+ * \brief Função responsável por lidar com o operador e< para strings
+ * @param s Apontador para a Stack
+ */
+void eless_string(Stack* s) {
+    char *X = pop_STRING(s);
+    char *Y = pop_STRING(s);
+    if (strcmp(X,Y) < 0) push_STRING(s, X);
+    else push_STRING(s, Y);
+}
+
+/**
+ * \brief Função responsável por lidar com o operador e> para strings
+ * @param s Apontador para a Stack
+ */
+void egreater_string(Stack* s) {
+    char *X = pop_STRING(s);
+    char *Y = pop_STRING(s);
+    if (strcmp(X,Y) > 0) push_STRING(s, X);
+    else push_STRING(s, Y);
+}
+
+
+/**
+ * \brief Função responsável por identificar o operador junto do 'e' e proceder com sua operação
+ * @param s Apontador para a Stack
+ */
+void elogic_string(char *token, Stack* s) {
+    switch(*token) {
+        case '<': eless_string(s); break;
+        case '>': egreater_string(s);break;
+    }
+}
+
 /**
  * \brief Função responsável por lidar com parser de strings
  * @param token Apontador para o array token
@@ -579,6 +693,11 @@ void string_op(char *token, Stack* s, char *seps) {
     }
     case '=': equal(s); break;
     case ',': size_range(s); break;
+    case '<': X_inicio(s); break;
+    case '>': X_fim(s); break;
+    case '(': remove_first(s); break;
+    case ')': remove_last(s); break;
+    case 'e': elogic_string(&token[1], s); break;
 
     default: push_STRING(s, get_delimited(token,seps)); break;
         
