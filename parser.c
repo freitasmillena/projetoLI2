@@ -138,7 +138,7 @@ Stack *eval(char *line, Stack* init_stack) {
     char *rest = (char *)malloc(sizeof(char)*strlen(line));
     char *token;
     
-    if(*line == '"') handle_string(line, init_stack, &rest);
+    if(*line == '"') handle_string(line, init_stack, &rest, p);
     else {
         for(token = get_token(line,&rest); token != NULL ; token = get_token(rest, &rest)) {
 
@@ -171,4 +171,4 @@ Stack *eval(char *line, Stack* init_stack) {
 void parser(char *line, Stack* s) {
     if (*line == '[') eval(line, NULL);
     else eval(line,s);
-}
+} 
