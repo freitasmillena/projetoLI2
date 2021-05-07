@@ -710,6 +710,7 @@ void handle_string(char *line, Stack* s, char **rest, DATA *p) {
     char *token;
     char seps[] = {'"', '\0'};
     for(token = get_token(line,rest); token != NULL ; token = get_token(*rest, rest)) {
+       
        handle_variable(token, s, p);
        int r = handle_push(token,s); 
        if (r) continue; 
