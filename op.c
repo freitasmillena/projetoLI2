@@ -455,10 +455,15 @@ char *get_delimited(char *token, char *seps) {
 
 char *get_token(char *line, char **rest); 
 
+/**
+ * \brief Função responsável por concatenar strings com strings ou strings com chars
+ *
+ * @param s Apontador pra Stack
+ */
 void string_cat(Stack* s) {
     int x = idtype(s);
     char *c = malloc(100);
-    char *t = malloc(100);
+    
     switch(x) {
         case '3': {
             char X = pop_CHAR(s);
@@ -473,7 +478,9 @@ void string_cat(Stack* s) {
                 //c--;
                 push_STRING(s,c);
                 //strcpy(t,)
+                
             }
+            break;
 
         }
         case '4': {
@@ -495,6 +502,7 @@ void string_cat(Stack* s) {
                 strcat(c,X);
                 push_STRING(s,c);
             }
+            break;
         }
     }
 
@@ -703,8 +711,8 @@ void handle_string(char *line, Stack* s, char **rest, DATA *p) {
     char seps[] = {'"', '\0'};
     for(token = get_token(line,rest); token != NULL ; token = get_token(*rest, rest)) {
        handle_variable(token, s, p);
-       //int r = handle_push(token,s); 
-       //if (r) continue; 
+       int r = handle_push(token,s); 
+       if (r) continue; 
        string_op(token,s, seps);
 
 

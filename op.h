@@ -221,6 +221,6 @@ void handle_binary(char *token,Stack* s);
 void handle_logic(char *token, Stack* s);
 void handle_stack(char *token, Stack* s);
 void handle_variable(char *token, Stack* s, DATA *p);
-void handle_string(char *token, Stack* s, char **rest);
+void handle_string(char *token, Stack* s, char **rest, DATA *p);
 void string_op(char *token, Stack* s, char *seps);
 void size_range(Stack *s);
