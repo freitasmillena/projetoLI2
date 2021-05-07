@@ -13,6 +13,7 @@
 #include "op.h"
 #include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 
 /**
 * Desenvolvemos diferentes macros para os diferentes casos, tendo em consideração o seu tipo de dados.
@@ -454,6 +455,53 @@ char *get_delimited(char *token, char *seps) {
 
 char *get_token(char *line, char **rest); 
 
+void string_cat(Stack* s) {
+    int x = idtype(s);
+    char *c = malloc(100);
+    char *t = malloc(100);
+    switch(x) {
+        case '3': {
+            char X = pop_CHAR(s);
+            int y = idtype(s);
+            if (y == 4) {
+                char *Y = pop_STRING(s);
+                strcpy(c,Y);
+                /**c = X;
+                c++;
+                *c = '\0';*/
+                strcat(c,&X);
+                //c--;
+                push_STRING(s,c);
+                //strcpy(t,)
+            }
+
+        }
+        case '4': {
+            char *X = pop_STRING(s);
+            int y = idtype(s);
+            if (y == 3) {
+                char Y = pop_CHAR(s);
+                strcpy(c,&Y);
+                /**c = Y;
+                c++;
+                *c = '\0';*/
+                strcat(c,X);
+                //c--;
+                push_STRING(s,c);
+            }
+            else {
+                char *Y = pop_STRING(s);
+                strcpy(c,Y);
+                strcat(c,X);
+                push_STRING(s,c);
+            }
+        }
+    }
+
+
+    
+}
+
 /**
  * \brief Função responsável por concatenar string n vezes
  * @param source String a ser concatenada
@@ -650,12 +698,13 @@ void elogic_string(char *token, Stack* s) {
  * @param s Apontador para a Stack
  * @param rest Onde será guardado o resto da linha após o token 
  */
-void handle_string(char *line, Stack* s, char **rest) {
+void handle_string(char *line, Stack* s, char **rest, DATA *p) {
     char *token;
     char seps[] = {'"', '\0'};
     for(token = get_token(line,rest); token != NULL ; token = get_token(*rest, rest)) {
-       int r = handle_push(token,s); 
-       if (r) continue; 
+       handle_variable(token, s, p);
+       //int r = handle_push(token,s); 
+       //if (r) continue; 
        string_op(token,s, seps);
 
 
@@ -672,9 +721,15 @@ void string_op(char *token, Stack* s, char *seps) {
     switch (*token)
     {
     case '+': {
+        /*string_conversion(s);
         char *X = pop_STRING(s);
+        string_conversion(s);
         char *Y = pop_STRING(s);
-        push_STRING(s, strcat(Y,X));
+        char *c = malloc(100);
+        strcpy(c,Y);
+        strcat(c,X);
+        push_STRING(s, c);*/
+        string_cat(s);
         break;
     }
     case '*': {
@@ -699,10 +754,9 @@ void string_op(char *token, Stack* s, char *seps) {
     case ')': remove_last(s); break;
     case 'e': elogic_string(&token[1], s); break;
 
-    default: push_STRING(s, get_delimited(token,seps)); break;
+    case '"': push_STRING(s, get_delimited(token,seps)); break;
+    default: break;
         
     
     }
 }                                                                 
-
-
