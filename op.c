@@ -714,6 +714,8 @@ void handle_string(char *line, Stack* s, char **rest, DATA *p) {
        int r = handle_push(token,s); 
        if (r) continue; 
        string_op(token,s, seps);
+       handle_stack(token,s);
+       handle_conversion(token,s);
 
 
     }
