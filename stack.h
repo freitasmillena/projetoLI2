@@ -30,6 +30,7 @@ typedef enum { /**Enum de tipo TYPE */
  */
 #define NUMBER  (INTEGER | DOUBLE) /** number é integer ou double */
 
+
 /**
  * \brief Estrutura que guarda dados e seu respetivo tipo
  */
@@ -40,6 +41,7 @@ typedef struct { /** Estrutura do tipo DATA */
   double DOUBLE; /** Valor do tipo double */
   char CHAR; /** Valor do tipo char */
   char *STRING; /** Valor do tipo string */
+  struct stack *st;
   } x; /** Union x */
 } DATA; /** Struct DATA */
 
@@ -47,12 +49,13 @@ typedef struct { /** Estrutura do tipo DATA */
 /**
  * \brief Representação da stack através de uma estrutura
  */
-typedef struct { 
+typedef struct stack{ 
     int sp; ///< Stack pointer -> Aponta para o elemento no topo da Stack
     DATA *elements; ///< Array para conter os elementos da Stack
     int capacity; ///< Capacidade total atual da Stack
 
 }Stack;
+
 
 //Declarações de funções
 int idtype(Stack* s);

@@ -447,7 +447,7 @@ int handle_push(char *token, Stack* s) {
 char *get_delimited(char *token, char *seps) {
     char *result = (char *)malloc(sizeof(char)*strlen(token));
 
-    if(*seps == '"') strncpy(result, token +1, sizeof(char)*(strlen(token)-2));
+    if(*seps == '"' || *seps == '[' ) strncpy(result, token +1, sizeof(char)*(strlen(token)-2));
     
     return result;
 }
